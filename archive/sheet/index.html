@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MegEstates | Realty, Construction & Developments</title>
+  <meta name="description" content="MegEstates: realty, construction and developments across Visakhapatnam, Andhra Pradesh and Hyderabad.">
+  <meta name="theme-color" content="#06201F">
+  <link rel="icon" href="../../assets/logo.png" type="image/png">
+  <meta property="og:title" content="MegEstates | Realty, Construction & Developments">
+  <meta property="og:description" content="Thoughtfully developed. Plots and apartments in Visakhapatnam and Andhra Pradesh.">
+  <meta property="og:image" content="../../assets/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#top" aria-label="MegEstates home">
+      <img src="../../assets/logo.png" alt="MegEstates" width="890" height="610">
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <a href="#ventures">Ventures</a>
+      <a href="#walk">Walk the site</a>
+      <a href="#services">Services</a>
+      <a href="#plot-passport">Plots</a>
+      <a href="#partner">Partner</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main id="top">
+
+    <!-- 01 Hero: master-plan sheet that draws itself -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="sheet-grid" aria-hidden="true"></div>
+
+      <div class="hero-head">
+        <p class="mono label">Sheet 01 &middot; Master plan</p>
+        <h1 id="hero-title" class="hero-title">Thoughtfully <em>developed.</em></h1>
+        <p class="hero-lede">Realty, construction and developments across Visakhapatnam, Andhra Pradesh and Hyderabad.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#ventures">View ventures</a>
+          <a class="btn btn-line" href="#partner">Partner with us</a>
+        </div>
+      </div>
+
+      <div class="plan-wrap">
+        <svg class="plan" id="master-plan" viewBox="0 0 1000 620" role="img" aria-label="Master plan drawing of Venture 01: 40 numbered plots, an approach road and the Residential 02 towers">
+          <g id="plan-lines"></g>
+          <g id="plan-labels" class="plan-labels"></g>
+        </svg>
+      </div>
+
+      <div class="title-block" aria-hidden="false">
+        <div class="tb-logo"><img src="../../assets/logo.png" alt="MegEstates" width="890" height="610"></div>
+        <dl>
+          <div><dt>Project</dt><dd>Venture 01</dd></div>
+          <div><dt>Location</dt><dd>Visakhapatnam</dd></div>
+          <div><dt>Scale</dt><dd>Not to scale</dd></div>
+          <div><dt>Sheet</dt><dd>01 of 04</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 02 Ventures: a sheet index -->
+    <section class="section index-sec" id="ventures" aria-labelledby="ventures-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="mono label">Sheet index</p>
+          <h2 id="ventures-title" class="h2">Ventures, <em>in drawing order.</em></h2>
+        </header>
+
+        <ol class="sheet-index">
+          <li class="sheet" data-reveal>
+            <span class="mono code">A-101</span>
+            <h3>Venture 01</h3>
+            <span class="meta">Plots &middot; Visakhapatnam</span>
+            <span class="tag tag-live">Ongoing</span>
+          </li>
+          <li class="sheet" data-reveal>
+            <span class="mono code">A-102</span>
+            <h3>Residential 02</h3>
+            <span class="meta">Apartments &middot; Visakhapatnam</span>
+            <span class="tag tag-live">Ongoing</span>
+          </li>
+          <li class="sheet" data-reveal>
+            <span class="mono code">A-103</span>
+            <h3>Venture 03</h3>
+            <span class="meta">Plots &middot; Andhra Pradesh</span>
+            <span class="tag tag-live">Ongoing</span>
+          </li>
+          <li class="sheet" data-reveal>
+            <a href="#completed">
+              <span class="mono code">A-104</span>
+              <h3>Completed portfolio</h3>
+              <span class="meta">Hasini Infra &middot; five projects</span>
+              <span class="tag">Delivered</span>
+            </a>
+          </li>
+        </ol>
+        <p class="note" data-reveal>Working titles. Names, photography and approved details to replace before launch.</p>
+      </div>
+    </section>
+
+    <!-- 03 Walk the site: 3D, pinned -->
+    <section class="walk" id="walk" aria-labelledby="walk-title">
+      <div class="walk-pin">
+        <div class="walk-copy">
+          <p class="mono label label-aqua">Walk the site &middot; 3D</p>
+          <h2 id="walk-title" class="h2">Plot by plot, <em>then the towers.</em></h2>
+          <ol class="stops">
+            <li data-stop="0"><span>01</span>Overhead survey</li>
+            <li data-stop="1"><span>02</span>Plots built out from the centre</li>
+            <li data-stop="2"><span>03</span>Residential 02 rises</li>
+          </ol>
+          <p class="note note-dark">Concept visualisation. Hover a plot to read its ID.</p>
+        </div>
+        <div class="walk-stage" aria-label="3D concept of the estate">
+          <canvas id="estate" aria-hidden="true"></canvas>
+          <div class="plot-tip" id="plot-tip" role="status" aria-live="polite" hidden></div>
+          <div class="no-webgl-msg">Your browser cannot show the 3D view. The master plan above shows the same layout.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 Process: a building section that is drawn on scroll -->
+    <section class="section process" aria-labelledby="process-title">
+      <div class="wrap process-grid">
+        <header class="sec-head">
+          <p class="mono label label-aqua">Section A&ndash;A</p>
+          <h2 id="process-title" class="h2">From land <em>to keys.</em></h2>
+          <p class="lede-dark">Six stages. Each one is shared with you as it happens.</p>
+        </header>
+
+        <svg class="section-drawing" viewBox="0 0 640 520" role="img" aria-label="Building section showing six stages from land to handover">
+          <line class="ground" x1="20" y1="440" x2="620" y2="440"/>
+          <g class="hatch" aria-hidden="true"></g>
+          <path class="building" d="M230 440 V110 H330 V70 H410 V150 H470 V440"/>
+          <path class="floors" d="M230 380 H470 M230 320 H470 M230 260 H470 M230 200 H470 M230 140 H470 M330 110 V440 M410 150 V440"/>
+          <g class="levels">
+            <g data-level="0"><line x1="20" y1="440" x2="230" y2="440"/><text x="28" y="430">01 Land</text></g>
+            <g data-level="1"><line x1="20" y1="350" x2="230" y2="350"/><text x="28" y="340">02 Layout</text></g>
+            <g data-level="2"><line x1="20" y1="260" x2="230" y2="260"/><text x="28" y="250">03 Approvals</text></g>
+            <g data-level="3"><line x1="20" y1="170" x2="230" y2="170"/><text x="28" y="160">04 Build</text></g>
+            <g data-level="4"><line x1="20" y1="80" x2="230" y2="80"/><text x="28" y="70">05 Sell</text></g>
+            <g data-level="5"><line x1="20" y1="20" x2="230" y2="20"/><text x="28" y="14">06 Handover</text></g>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 05 Services: accordion, no pinning -->
+    <section class="section services" id="services" aria-labelledby="services-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="mono label">Services</p>
+          <h2 id="services-title" class="h2">Four disciplines, <em>one team.</em></h2>
+        </header>
+        <div class="accordion">
+          <details open>
+            <summary><span class="mono">01</span><span class="ttl">Property development</span><span class="plus" aria-hidden="true"></span></summary>
+            <div class="panel"><p>Land assessment with landowners and development partners, then plotted ventures and residential or commercial schemes. Subject to feasibility and approvals.</p></div>
+          </details>
+          <details>
+            <summary><span class="mono">02</span><span class="ttl">Realty &amp; project sales</span><span class="plus" aria-hidden="true"></span></summary>
+            <div class="panel"><p>Primary apartments, plotted ventures and bulk inventory sold under a direct mandate with the owner or developer. Not resale.</p></div>
+          </details>
+          <details>
+            <summary><span class="mono">03</span><span class="ttl">Construction</span><span class="plus" aria-hidden="true"></span></summary>
+            <div class="panel"><p>Residential and commercial construction, attributed to the Hasini Infra track record, with dated progress shared project by project.</p></div>
+          </details>
+          <details>
+            <summary><span class="mono">04</span><span class="ttl">Investments</span><span class="plus" aria-hidden="true"></span></summary>
+            <div class="panel"><p>Selected opportunities, each with documents for due diligence. Projected returns are not guaranteed.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 Digital Plot Passport -->
+    <section class="section passport" id="plot-passport" aria-labelledby="passport-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="mono label label-aqua">Digital plot passport</p>
+          <h2 id="passport-title" class="h2">Every plot, <em>its own record.</em></h2>
+        </header>
+
+        <div class="schedule">
+          <div class="plot-board">
+            <div class="board-head">
+              <span class="mono">Venture 01 &middot; plot schedule</span>
+              <span class="tag tag-sample">Sample data</span>
+            </div>
+            <div class="plot-grid" id="plot-grid" role="list" aria-label="Plots in Venture 01"></div>
+            <ul class="legend" aria-label="Status key">
+              <li><i class="k k-available"></i>Available</li>
+              <li><i class="k k-reserved"></i>Reserved</li>
+              <li><i class="k k-booked"></i>Booked</li>
+              <li><i class="k k-sold"></i>Sold</li>
+            </ul>
+          </div>
+
+          <aside class="passport-card" aria-live="polite">
+            <p class="mono label">Passport</p>
+            <h3 class="pp-id" id="pp-id">MEG-001</h3>
+            <span class="tag" id="pp-status" data-status="available">Available</span>
+            <dl class="pp-data">
+              <div><dt>Area</dt><dd id="pp-area">150 sq. yd.</dd></div>
+              <div><dt>Facing</dt><dd id="pp-facing">East</dd></div>
+              <div><dt>Road</dt><dd id="pp-road">40 ft</dd></div>
+              <div><dt>Corner</dt><dd id="pp-corner">No</dd></div>
+              <div><dt>Price</dt><dd>On request</dd></div>
+            </dl>
+            <button class="btn btn-gold btn-block" id="pp-enquire" type="button">Enquire about this plot</button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 Apartments: a floor schedule -->
+    <section class="section floors-sec" id="apartments" aria-labelledby="apt-title">
+      <div class="wrap floors-grid">
+        <header class="sec-head">
+          <p class="mono label">Residential 02</p>
+          <h2 id="apt-title" class="h2">Floor by <em>floor.</em></h2>
+          <p class="lede">Floor plans, dated progress and RERA details appear per floor once approved. Progress shown is illustrative.</p>
+          <div class="hero-actions">
+            <a class="btn btn-dark" href="#contact">Request details</a>
+            <a class="btn btn-line-dark" href="#contact">Bulk enquiry</a>
+          </div>
+        </header>
+        <ol class="floor-table" id="floor-table" aria-label="Floor progress, illustrative"></ol>
+      </div>
+    </section>
+
+    <!-- 08 Completed portfolio -->
+    <section class="section completed" id="completed" aria-labelledby="completed-title">
+      <div class="wrap">
+        <header class="sec-head">
+          <p class="mono label">Completed portfolio</p>
+          <h2 id="completed-title" class="h2">Delivered <em>works.</em></h2>
+          <p class="lede">Hasini Infra projects, attributed to Hasini Infra.</p>
+        </header>
+        <ol class="delivered">
+          <li data-reveal><span class="mono">01</span><h3>Vaibhav Towers</h3><span class="meta">Kakinada</span></li>
+          <li data-reveal><span class="mono">02</span><h3>Madhu Kranthi</h3><span class="meta">Andhra Pradesh</span></li>
+          <li data-reveal><span class="mono">03</span><h3>Sai Lakshmi</h3><span class="meta">Andhra Pradesh</span></li>
+          <li data-reveal><span class="mono">04</span><h3>Santhi Prime</h3><span class="meta">Guntur</span></li>
+          <li data-reveal><span class="mono">05</span><h3>Surya Arcade</h3><span class="meta">Andhra Pradesh</span></li>
+        </ol>
+        <p class="note" data-reveal>Spelling of &ldquo;Vaibhav&rdquo; and localities are being confirmed against the original records.</p>
+      </div>
+    </section>
+
+    <!-- 09 Partner: a submission sheet -->
+    <section class="section partner" id="partner" aria-labelledby="partner-title">
+      <div class="wrap partner-grid">
+        <header class="sec-head">
+          <p class="mono label label-aqua">Partner with us</p>
+          <h2 id="partner-title" class="h2">Bring a project <em>to market.</em></h2>
+          <p class="lede-dark">For builders, developers, landowners and direct owners. We do not onboard agents or intermediaries.</p>
+        </header>
+
+        <form class="sheet-form" id="partner-form" novalidate>
+          <div class="cell">
+            <label for="p-role" class="mono">I am a</label>
+            <select id="p-role" name="role" required>
+              <option value="">Select</option>
+              <option>Builder</option><option>Developer</option><option>Landowner</option><option>Direct owner</option>
+            </select>
+          </div>
+          <div class="cell">
+            <label for="p-name" class="mono">Name</label>
+            <input id="p-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="cell">
+            <label for="p-phone" class="mono">Phone</label>
+            <input id="p-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          </div>
+          <div class="cell">
+            <label for="p-location" class="mono">Location</label>
+            <input id="p-location" name="location" type="text" required>
+          </div>
+          <label class="cell cell-check">
+            <input type="checkbox" name="consent" required>
+            <span>I am the owner or an authorised representative, and I agree to be contacted.</span>
+          </label>
+          <div class="cell cell-action">
+            <button class="btn btn-gold" type="submit">Submit</button>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10 Contact -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <header class="sec-head">
+          <p class="mono label">Contact</p>
+          <h2 id="contact-title" class="h2">Talk to <em>the team.</em></h2>
+          <p class="enquiry-target" id="enquiry-target">General enquiry</p>
+        </header>
+
+        <div class="contact-cards">
+          <div class="ccard"><p class="mono">Visakhapatnam</p><p>Office address to be confirmed</p></div>
+          <div class="ccard"><p class="mono">Hyderabad</p><p>Office address to be confirmed</p></div>
+          <form class="ccard ccard-form" id="enquiry-form" novalidate>
+            <input type="hidden" name="plot" id="e-plot" value="">
+            <label for="e-name" class="mono">Name</label>
+            <input id="e-name" name="name" type="text" autocomplete="name" required>
+            <label for="e-phone" class="mono">Phone</label>
+            <input id="e-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+            <label class="check">
+              <input type="checkbox" name="consent" required>
+              <span>I agree to be contacted.</span>
+            </label>
+            <button class="btn btn-gold btn-block" type="submit">Send enquiry</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-row">
+      <div class="footer-brand">
+        <img src="../../assets/logo.png" alt="MegEstates" width="890" height="610">
+        <p class="mono">Realty | Construction | Developments</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#ventures">Ventures</a><a href="#services">Services</a><a href="#partner">Partner</a><a href="#contact">Contact</a>
+      </nav>
+      <p class="footer-legal">Renders and layouts are illustrative. Details and prices are subject to approved documents. Returns are not guaranteed.</p>
+      <p class="footer-links"><a href="#">Privacy</a> <a href="#">Terms</a> <span>&copy; 2026 MegEstates</span></p>
+    </div>
+  </footer>
+
+  <nav class="mobile-bar" aria-label="Quick contact">
+    <a href="#contact">Call</a>
+    <a href="#contact">WhatsApp</a>
+    <a class="mobile-bar-primary" href="#contact">Enquire</a>
+  </nav>
+
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MegEstates | Plots, Apartments & Developments</title>
+  <meta name="description" content="Find a plot or a new apartment with MegEstates across Visakhapatnam, Andhra Pradesh and Hyderabad. Every plot documented before you visit.">
+  <meta name="theme-color" content="#F3F2EF">
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <meta property="og:title" content="MegEstates | Plots, Apartments & Developments">
+  <meta property="og:description" content="Find the plot you'll call home.">
+  <meta property="og:image" content="assets/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script>
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('meg-theme'); } catch (err) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-row">
+      <a class="brand" href="#top" aria-label="MegEstates home">
+        <img src="assets/logo-transparent.png" alt="MegEstates" width="791" height="517">
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="#finder">Projects</a>
+        <a href="#how">How it works</a>
+        <a href="#plots">Plots</a>
+        <a href="#partner">Partner</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-end">
+        <span class="nav-cities">Visakhapatnam &middot; Hyderabad</span>
+        <button class="theme-btn" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.4 6.4 0 0 0 10.2 10.2z"/></svg>
+        </button>
+        <a class="btn btn-dark btn-sm" href="#contact">Enquire</a>
+        <button class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-top">
+        <h1 class="hero-title">
+          <span class="line"><span>Find the plot</span></span>
+          <span class="line"><span>you'll call home</span></span>
+        </h1>
+        <div class="hero-side">
+          <p>Plotted ventures and new apartment projects across Visakhapatnam, Andhra Pradesh and Hyderabad. Every plot documented before you visit.</p>
+          <a class="btn btn-dark" href="#finder">Explore projects</a>
+        </div>
+      </div>
+
+      <div class="wrap hero-media">
+        <figure class="hero-frame media">
+          <img data-render="villa-golden" data-w="1600" data-h="860" alt="Concept render of a modern home on a MegEstates plot at golden hour">
+          <figcaption class="cap">Concept render</figcaption>
+        </figure>
+        <aside class="hero-card">
+          <figure class="media hero-card-img">
+            <img data-render="plots-aerial" data-w="520" data-h="340" alt="Concept render of the Venture 01 plotted layout from above">
+          </figure>
+          <div class="hero-card-body">
+            <p class="eyebrow">Venture 01 &middot; Visakhapatnam</p>
+            <p class="hero-card-title">40 plots, each with a passport</p>
+            <a class="link-arrow" href="#plots">View plots</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Finder -->
+    <section class="section finder" id="finder">
+      <div class="wrap">
+        <div class="sec-head split" data-reveal>
+          <h2 class="h2">We help you find the plot that fits</h2>
+          <p class="muted">Filter projects by type, location, plot size and facing. Results update as you choose.</p>
+        </div>
+
+        <div class="finder-panel" data-reveal>
+          <div class="tabs" role="tablist" aria-label="Project type">
+            <button role="tab" aria-selected="true" data-type="all">All</button>
+            <button role="tab" aria-selected="false" data-type="plots">Plots</button>
+            <button role="tab" aria-selected="false" data-type="apartments">Apartments</button>
+            <button role="tab" aria-selected="false" data-type="new">New launches</button>
+            <button role="tab" aria-selected="false" data-type="commercial">Commercial</button>
+            <span class="tab-ink" aria-hidden="true"></span>
+          </div>
+          <form class="filters" id="filters">
+            <label class="select"><span class="sr-only">Location</span>
+              <select name="region">
+                <option value="all">All locations</option>
+                <option value="visakhapatnam">Visakhapatnam</option>
+                <option value="andhra">Andhra Pradesh</option>
+                <option value="hyderabad">Hyderabad</option>
+              </select>
+            </label>
+            <label class="select"><span class="sr-only">Plot size</span>
+              <select name="size">
+                <option value="all">Any plot size</option>
+                <option value="0-160">Up to 160 sq. yd.</option>
+                <option value="160-200">160 to 200 sq. yd.</option>
+                <option value="200-9999">200 sq. yd. and above</option>
+              </select>
+            </label>
+            <label class="select"><span class="sr-only">Facing</span>
+              <select name="facing">
+                <option value="all">Any facing</option>
+                <option>East</option><option>North</option><option>West</option><option>South</option>
+              </select>
+            </label>
+            <div class="filter-actions">
+              <button type="reset" class="btn-text">Clear filters</button>
+              <span class="result-count" id="result-count" aria-live="polite"></span>
+            </div>
+          </form>
+        </div>
+
+        <div class="cards" id="cards"></div>
+        <p class="empty" id="empty" hidden>No projects match these filters. <button class="btn-text" type="button" id="empty-reset">Clear filters</button></p>
+        <p class="note" data-reveal>Working titles and sample details. Replace with approved project data and photography before launch.</p>
+      </div>
+    </section>
+
+    <!-- How it works: sticky steps with swapping media -->
+    <section class="how" id="how" aria-labelledby="how-title">
+      <div class="how-sticky">
+        <div class="wrap">
+          <div class="sec-head split">
+            <h2 id="how-title" class="h2">See what we offer and how it works</h2>
+            <p class="muted">One team and one record for your plot, from the first call to registration.</p>
+          </div>
+          <div class="how-grid">
+            <div class="how-copy">
+              <div class="how-texts">
+                <article class="how-text is-active">
+                  <h3>Your requirements</h3>
+                  <p>Tell us the location, size, facing and budget you have in mind. We shortlist plots that fit.</p>
+                  <a class="btn btn-line" href="#contact">Share requirements</a>
+                </article>
+                <article class="how-text">
+                  <h3>Site visit</h3>
+                  <p>Walk the venture with our team. Every plot is marked on the ground with its passport ID.</p>
+                  <a class="btn btn-line" href="#contact">Book a site visit</a>
+                </article>
+                <article class="how-text">
+                  <h3>Documents</h3>
+                  <p>Review the layout approval, title papers and plot passport before you commit.</p>
+                  <a class="btn btn-line" href="#plots">See a plot passport</a>
+                </article>
+                <article class="how-text">
+                  <h3>Registration</h3>
+                  <p>Registration support and a clear handover of your plot, with nothing left unexplained.</p>
+                  <a class="btn btn-line" href="#contact">Talk to us</a>
+                </article>
+              </div>
+              <ol class="how-steps">
+                <li><button type="button" class="is-active" data-step="0">Your requirements</button></li>
+                <li><button type="button" data-step="1">Site visit</button></li>
+                <li><button type="button" data-step="2">Documents</button></li>
+                <li><button type="button" data-step="3">Registration</button></li>
+              </ol>
+            </div>
+            <div class="how-media">
+              <figure class="media how-img is-active"><img data-render="villa-midday" data-w="1200" data-h="820" alt="Concept render of a home on a plot"></figure>
+              <figure class="media how-img"><img data-render="plots-close" data-w="1200" data-h="820" alt="Concept render of marked plots in a venture"></figure>
+              <figure class="media how-img"><img data-render="plots-aerial" data-w="1200" data-h="820" alt="Concept render of a venture layout from above"></figure>
+              <figure class="media how-img"><img data-render="villa-dusk" data-w="1200" data-h="820" alt="Concept render of a finished home at dusk"></figure>
+              <div class="how-inset" aria-hidden="true">
+                <p class="eyebrow">Plot passport</p>
+                <p class="inset-id" id="inset-id">MEG-001</p>
+                <p class="inset-meta" id="inset-meta">150 sq. yd. &middot; East</p>
+              </div>
+              <span class="cap">Concept render</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statement and live inventory -->
+    <section class="section stats" aria-labelledby="stats-title">
+      <div class="wrap">
+        <div class="sec-head split">
+          <h2 id="stats-title" class="h2 reveal-words">Every plot documented, every status live, before you visit.</h2>
+          <p class="muted">Plot status is managed centrally and dated, so what you see here matches the site.</p>
+        </div>
+        <div class="stat-cards">
+          <article class="stat-card" data-reveal>
+            <p class="stat-label">Plots available &middot; Venture 01</p>
+            <p class="stat-value"><span data-count id="stat-available">0</span><small>%</small></p>
+            <div class="bars" id="bars-available"></div>
+          </article>
+          <article class="stat-card" data-reveal>
+            <p class="stat-label">Plot sizes &middot; sq. yd.</p>
+            <p class="stat-value">150&ndash;200</p>
+            <div class="bars" id="bars-sizes"></div>
+          </article>
+          <article class="stat-card" data-reveal>
+            <p class="stat-label">Residential 02 &middot; floors complete</p>
+            <p class="stat-value"><span data-count id="stat-floors">0</span><small> of 12</small></p>
+            <div class="bars" id="bars-floors"></div>
+          </article>
+        </div>
+        <p class="note">Sample data for the layout. Live figures come from approved project records.</p>
+      </div>
+    </section>
+
+    <!-- Walk the venture: the plot build follows the scroll -->
+    <section class="walk" id="plots" aria-labelledby="walk-title">
+      <div class="walk-sticky">
+        <div class="wrap walk-grid">
+          <div class="walk-copy">
+            <p class="eyebrow">Venture 01 &middot; Visakhapatnam &middot; 3D</p>
+            <h2 id="walk-title" class="h2">Watch your plot take shape</h2>
+            <ol class="walk-stops">
+              <li class="is-on"><span>01</span>Overhead survey of 40 plots</li>
+              <li><span>02</span>Plots marked out from the centre</li>
+              <li><span>03</span>Homes rise, then Residential 02</li>
+            </ol>
+            <div class="btn-row">
+              <a class="btn btn-dark" href="#contact" data-interest="Site visit · Venture 01">Book a site visit</a>
+              <a class="btn btn-line" href="#contact" data-interest="Brochure · Venture 01">Request brochure</a>
+            </div>
+          </div>
+          <div class="walk-stage">
+            <canvas id="estate" role="img" aria-label="3D concept of Venture 01: plots are marked out, homes rise on them, then apartment towers grow"></canvas>
+            <div class="plot-tip" id="plot-tip" hidden></div>
+            <span class="cap">Concept visualisation &middot; hover a plot</span>
+            <div class="walk-bar" aria-hidden="true"><i id="walk-bar"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partner CTA -->
+    <section class="section partner" id="partner" aria-labelledby="partner-title">
+      <div class="wrap partner-grid">
+        <div class="partner-copy" data-reveal>
+          <h2 id="partner-title" class="h2">Bring your land or project to market</h2>
+          <p class="muted">For landowners, builders, developers and direct owners with multiple units. We work directly with owners, not intermediaries.</p>
+          <div class="btn-row">
+            <a class="btn btn-dark" href="#contact" data-interest="partner">Partner with us</a>
+            <a class="btn btn-line" href="#contact">Talk to the team</a>
+          </div>
+        </div>
+        <div class="deck" aria-hidden="true">
+          <figure class="media deck-card"><img data-render="tower-golden" data-w="640" data-h="800" alt=""></figure>
+          <figure class="media deck-card"><img data-render="plots-golden" data-w="640" data-h="800" alt=""></figure>
+          <figure class="media deck-card"><img data-render="villa-dusk" data-w="640" data-h="800" alt=""></figure>
+          <span class="cap">Concept renders</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delivered -->
+    <section class="delivered" aria-labelledby="delivered-title">
+      <div class="wrap">
+        <p id="delivered-title" class="eyebrow">Completed by Hasini Infra</p>
+        <ul class="delivered-row">
+          <li><b>Vaibhav Towers</b><span>Kakinada</span></li>
+          <li><b>Madhu Kranthi</b><span>Andhra Pradesh</span></li>
+          <li><b>Sai Lakshmi</b><span>Andhra Pradesh</span></li>
+          <li><b>Santhi Prime</b><span>Guntur</span></li>
+          <li><b>Surya Arcade</b><span>Andhra Pradesh</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <div data-reveal>
+          <h2 id="contact-title" class="h2">Let's talk about your plot</h2>
+          <p class="muted">Share a few details and the team will get in touch.</p>
+          <p class="enquiry-tag" id="enquiry-tag">General enquiry</p>
+          <div class="offices">
+            <div><p class="eyebrow">Visakhapatnam</p><p>Office address to be confirmed</p></div>
+            <div><p class="eyebrow">Hyderabad</p><p>Office address to be confirmed</p></div>
+          </div>
+        </div>
+        <form class="form" id="enquiry-form" novalidate data-reveal>
+          <input type="hidden" name="subject" id="f-subject" value="General enquiry">
+          <label class="field"><span>I am a</span>
+            <select name="role" id="f-role" required>
+              <option value="">Select</option>
+              <option value="buyer">Buyer</option>
+              <option value="landowner">Landowner</option>
+              <option value="builder">Builder or developer</option>
+              <option value="owner">Direct owner with multiple units</option>
+            </select>
+          </label>
+          <div class="field-row">
+            <label class="field"><span>Name</span><input name="name" type="text" autocomplete="name" required></label>
+            <label class="field"><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" required><span>I agree to be contacted about this enquiry.</span></label>
+          <button class="btn btn-dark btn-block" type="submit">Send enquiry</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="assets/logo-transparent.png" alt="MegEstates" width="791" height="517">
+        <p>Realty | Construction | Developments</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#finder">Projects</a><a href="#how">How it works</a><a href="#plots">Plots</a><a href="#partner">Partner</a><a href="#contact">Contact</a>
+      </nav>
+      <p class="footer-legal">Images are concept renders. Project details, approvals and prices are subject to approved documents. Returns are not guaranteed.</p>
+      <p class="footer-base"><a href="#">Privacy</a><a href="#">Terms</a><span>&copy; 2026 MegEstates</span></p>
+    </div>
+  </footer>
+
+  <nav class="quickbar" aria-label="Quick contact">
+    <a href="#contact">Call</a>
+    <a href="#contact">WhatsApp</a>
+    <a class="quickbar-primary" href="#contact">Enquire</a>
+  </nav>
+</body>
+</html>
