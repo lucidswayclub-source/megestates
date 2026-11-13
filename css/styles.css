@@ -381,13 +381,6 @@ html.lenis, html.lenis body { height: auto; }
 .deck-card:nth-child(1) { transform: translateX(20%) rotate(3deg); z-index: 3; }
 .deck .cap { left: auto; right: 12px; top: 12px; z-index: 5; }
 
-/* Delivered strip */
-.delivered { padding: 40px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.delivered-row { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px 48px; }
-.delivered-row li { display: grid; gap: 2px; }
-.delivered-row b { font-family: var(--font-head); font-weight: 500; font-size: 1.15rem; letter-spacing: -0.02em; }
-.delivered-row span { font-size: 0.8125rem; color: var(--muted); }
-
 /* Contact */
 .contact-grid { display: grid; gap: 40px; }
 @media (min-width: 900px) { .contact-grid { grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; } }
@@ -458,3 +451,24 @@ html.lenis, html.lenis body { height: auto; }
 [data-theme="dark"] .card, [data-theme="dark"] .stat-card, [data-theme="dark"] .finder-panel, [data-theme="dark"] .form { border: 1px solid var(--line); }
 [data-theme="dark"] .footer { background: #050505; border-top: 1px solid var(--line); }
 [data-theme="dark"] ::selection { background: #D4AF37; color: #0A0A0A; }
+
+/* Projects: The Lucids Resort as the featured venture, Hasini Infra beside it */
+a.card { text-decoration: none; color: inherit; }
+.card-by { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.card-feature .card-by { color: var(--gold-deep); }
+[data-theme="dark"] .card-feature .card-by { color: var(--gold); }
+.card-enquire { margin-top: 10px; justify-self: start; }
+.card-go { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--btn-bg); position: relative; transition: transform 0.4s var(--ease); }
+.card-go::after { content: '\2192'; position: absolute; inset: 0; display: grid; place-items: center; color: var(--btn-fg); font-size: 1.1rem; }
+.card-feature:hover .card-go { transform: rotate(-45deg); }
+.card-feature { grid-column: 1 / -1; }
+.card-feature .card-row h3 { font-size: clamp(1.5rem, 3vw, 2.4rem); letter-spacing: -0.035em; }
+@media (min-width: 900px) {
+  .card-feature { display: grid; grid-template-columns: 1.6fr 1fr; }
+  .card-feature .media { aspect-ratio: auto; min-height: 380px; }
+  .card-feature .card-body { padding: 32px; align-content: center; gap: 10px; }
+}
+.how-plan { background: #FFFFFF; }
+.how-plan img { object-fit: contain; padding: 12px; }
+.plot-tip b { font-weight: 600; }
+@media (min-width: 720px) { .filters { grid-template-columns: minmax(220px, 320px) 1fr; } }

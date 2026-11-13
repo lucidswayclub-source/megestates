@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Lucids Resort | MegEstates</title>
+  <meta name="description" content="The Lucids Resort: a MegEstates plotted venture in the VMRDA region with 102 residential plots on 12 m roads and a proposed resort at its gate. Explore it in 3D.">
+  <meta name="theme-color" content="#F3F2EF">
+  <link rel="icon" href="assets/logo.png" type="image/png">
+  <meta property="og:title" content="The Lucids Resort | MegEstates">
+  <meta property="og:description" content="102 plots and a resort at the gate. Explore the venture in 3D.">
+  <meta property="og:image" content="assets/lucids/aerial-dusk.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/venture.css">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script>
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('meg-theme'); } catch (err) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="module" src="js/venture.js"></script>
+</head>
+<body class="venture">
+
+  <header class="nav is-solid" id="nav">
+    <div class="wrap nav-row">
+      <a class="brand" href="index.html" aria-label="MegEstates home">
+        <img src="assets/logo-transparent.png" alt="MegEstates" width="791" height="517">
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="The Lucids Resort">
+        <a href="#overview">Overview</a>
+        <a href="#layout">Layout</a>
+        <a href="#resort">Resort</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#location">Location</a>
+      </nav>
+      <div class="nav-end">
+        <a class="nav-back" href="index.html#finder">All projects</a>
+        <button class="theme-btn" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.4 6.4 0 0 0 10.2 10.2z"/></svg>
+        </button>
+        <a class="btn btn-dark btn-sm" href="index.html?interest=Site%20visit%20%C2%B7%20The%20Lucids%20Resort#contact">Enquire</a>
+        <button class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- The venture in 3D, fixed behind the chapters -->
+  <div class="scene" id="scene">
+    <canvas id="lucids" role="img" aria-label="3D concept of The Lucids Resort venture: the boundary is surveyed, the compound wall and entrance arch rise, plots appear along 12 metre roads, then the resort is built in the south-west open space"></canvas>
+    <div class="scene-veil" aria-hidden="true"></div>
+    <div class="plot-tip" id="plot-tip" hidden></div>
+    <p class="scene-cap">Concept visualisation from the layout plan &middot; not to scale</p>
+  </div>
+
+  <ol class="rail" aria-label="Chapters">
+    <li><a href="#overview" class="is-on"><span>Overview</span></a></li>
+    <li><a href="#arch"><span>Entrance</span></a></li>
+    <li><a href="#layout"><span>Plots</span></a></li>
+    <li><a href="#resort"><span>Resort</span></a></li>
+    <li><a href="#visit"><span>Visit</span></a></li>
+  </ol>
+
+  <main>
+    <section class="journey" aria-label="The Lucids Resort in 3D">
+      <article class="chap chap-hero is-on" id="overview">
+        <div class="wrap">
+          <p class="eyebrow">A MegEstates venture &middot; VMRDA region, Andhra Pradesh</p>
+          <h1 class="venture-title" aria-label="The Lucids Resort"><span>The Lucids</span><span>Resort</span></h1>
+          <p class="venture-lede">A gated plotted layout with a resort at its gate.</p>
+          <div class="hero-facts">
+            <p><b data-count="102">102</b><span>residential plots</span></p>
+            <p><b>12 m</b><span>internal roads</span></p>
+            <p><b data-count="2">2</b><span>public open spaces</span></p>
+          </div>
+          <p class="scroll-hint" aria-hidden="true"><i></i>Scroll to build it</p>
+        </div>
+      </article>
+
+      <article class="chap" id="arch">
+        <div class="wrap">
+          <div class="chap-card">
+            <p class="chap-num">01 &middot; Entrance</p>
+            <h2 class="h2">Enter through the arch</h2>
+            <p>A new entrance arch and compound wall around the whole venture. Construction starts soon.</p>
+            <ul class="tags"><li class="tag-gold">Planned</li><li>Gated on all sides</li></ul>
+          </div>
+        </div>
+      </article>
+
+      <article class="chap chap-right" id="layout">
+        <div class="wrap">
+          <div class="chap-card">
+            <p class="chap-num">02 &middot; Layout</p>
+            <h2 class="h2">102 plots, every one numbered</h2>
+            <p>Laid out exactly as on the layout plan, with 12 m roads on every side.</p>
+            <ul class="legend">
+              <li><i class="lg-plot"></i>Residential plot</li>
+              <li><i class="lg-amenity"></i>Amenity plot</li>
+              <li><i class="lg-mortgaged"></i>Mortgaged area per plan</li>
+            </ul>
+            <p class="hint">Hover or tap any plot for its number.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chap" id="resort">
+        <div class="wrap">
+          <div class="chap-card">
+            <p class="chap-num">03 &middot; Resort</p>
+            <h2 class="h2">A resort at the gate</h2>
+            <p>The south-west open space becomes the resort, steps from the entrance.</p>
+            <ul class="amenities">
+              <li><img src="assets/lucids/clubhouse.webp" alt="" loading="lazy"><span>Clubhouse</span></li>
+              <li><img src="assets/lucids/pool-dusk.webp" alt="" loading="lazy"><span>Pool</span></li>
+              <li><img src="assets/lucids/box-cricket.webp" alt="" loading="lazy"><span>Box cricket</span></li>
+              <li><img src="assets/lucids/badminton.webp" alt="" loading="lazy"><span>Badminton</span></li>
+              <li><img src="assets/lucids/party-garden.webp" alt="" loading="lazy"><span>Party garden</span></li>
+            </ul>
+            <p class="fine">Proposed. Public-space use subject to approval.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="chap chap-right" id="visit">
+        <div class="wrap">
+          <div class="chap-card">
+            <p class="chap-num">04 &middot; Visit</p>
+            <h2 class="h2">Walk it before you choose</h2>
+            <p>See the plots on the ground with our team.</p>
+            <div class="btn-row">
+              <a class="btn btn-dark" href="index.html?interest=Site%20visit%20%C2%B7%20The%20Lucids%20Resort#contact">Book a site visit</a>
+              <a class="btn btn-line" href="index.html?interest=Brochure%20%C2%B7%20The%20Lucids%20Resort#contact">Request brochure</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Gallery: horizontal reel pinned while you scroll -->
+    <section class="reel" id="gallery" aria-labelledby="reel-title">
+      <div class="reel-sticky">
+        <div class="wrap reel-head">
+          <h2 id="reel-title" class="h2">See it finished</h2>
+          <p class="muted">Artist's impressions of the proposed development.</p>
+        </div>
+        <div class="reel-track" id="reel-track">
+          <figure class="shot shot-wide"><img src="assets/lucids/aerial-dusk.webp" alt="Artist's impression of the venture from the air at dusk, with lit roads and the resort beside the main road" loading="lazy"><figcaption><b>The venture at dusk</b><span>Resort and amenities subject to approval</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/clubhouse.webp" alt="Artist's impression of the two-storey clubhouse with glass ground floor and timber louvres" loading="lazy"><figcaption><b>Clubhouse</b><span>Proposed architectural concept</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/pool-dusk.webp" alt="Artist's impression of the pool and deck in front of the clubhouse at dusk" loading="lazy"><figcaption><b>Pool</b><span>Public-space use subject to approval</span></figcaption></figure>
+          <figure class="shot shot-wide"><img src="assets/lucids/aerial-amenities.webp" alt="Artist's impression of the resort from above: clubhouse, pool, badminton court, gazebo and box cricket" loading="lazy"><figcaption><b>The resort from above</b><span>Public-space amenities subject to approval</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/box-cricket.webp" alt="Artist's impression of the netted box cricket ground" loading="lazy"><figcaption><b>Box cricket</b><span>Public-space use subject to approval</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/badminton.webp" alt="Artist's impression of the outdoor badminton court" loading="lazy"><figcaption><b>Badminton</b><span>Public-space use subject to approval</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/party-garden.webp" alt="Artist's impression of the party garden with string lights in the evening" loading="lazy"><figcaption><b>Party garden</b><span>Public-space use subject to approval</span></figcaption></figure>
+          <figure class="shot"><img src="assets/lucids/street.webp" alt="Artist's impression of the tree-lined main road beside the resort" loading="lazy"><figcaption><b>Tree-lined roads</b><span>Artist's impression, subject to approvals</span></figcaption></figure>
+          <figure class="shot shot-wide"><img src="assets/lucids/aerial-day.webp" alt="Artist's impression of the plotted layout and resort from the air by day" loading="lazy"><figcaption><b>The layout by day</b><span>Artist's impression</span></figcaption></figure>
+        </div>
+        <div class="wrap reel-foot"><div class="reel-bar" aria-hidden="true"><i id="reel-bar"></i></div></div>
+      </div>
+    </section>
+
+    <!-- Plan and location -->
+    <section class="section where" id="location" aria-labelledby="where-title">
+      <div class="wrap">
+        <div class="sec-head split">
+          <h2 id="where-title" class="h2">On paper and on the map</h2>
+          <p class="muted">The 3D model above is drawn from this layout plan.</p>
+        </div>
+        <div class="where-grid">
+          <figure class="plan-card">
+            <a href="assets/lucids/layout-plan.png" target="_blank" rel="noopener" class="plan-img">
+              <img src="assets/lucids/layout-plan.png" alt="VMRDA layout plan of the venture showing plots 1 to 115, 12 metre internal roads and two public open spaces" loading="lazy" width="1160" height="1300">
+            </a>
+            <figcaption>Layout plan &middot; VMRDA, 2021 &middot; open full size</figcaption>
+          </figure>
+          <div class="where-side">
+            <div class="map-card">
+              <iframe title="Map of The Lucids Resort site" src="https://maps.google.com/maps?q=18.0137479,83.3764508&amp;t=k&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <dl class="facts">
+              <div><dt>Plots</dt><dd>102 residential &middot; 13 amenity</dd></div>
+              <div><dt>Roads</dt><dd>12 m wide, main road and internal</dd></div>
+              <div><dt>Open spaces</dt><dd>2,278.57 and 2,166.36 sq. m</dd></div>
+              <div><dt>Entrance</dt><dd>Arch and compound wall, planned</dd></div>
+            </dl>
+            <a class="btn btn-line" href="https://maps.google.com/?q=18.0137479,83.3764508" target="_blank" rel="noopener">Open in Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section venture-cta" aria-labelledby="cta-title">
+      <div class="wrap cta-box">
+        <h2 id="cta-title" class="h2">Pick your plot at The Lucids Resort</h2>
+        <div class="btn-row">
+          <a class="btn btn-dark" href="index.html?interest=Site%20visit%20%C2%B7%20The%20Lucids%20Resort#contact">Book a site visit</a>
+          <a class="btn btn-line" href="index.html#finder">See all projects</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <img src="assets/logo-transparent.png" alt="MegEstates" width="791" height="517">
+        <p>Realty | Construction | Developments</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html#finder">Projects</a><a href="#layout">Layout</a><a href="#resort">Resort</a><a href="#gallery">Gallery</a><a href="index.html#contact">Contact</a>
+      </nav>
+      <p class="footer-legal">Images are artist's impressions of the proposed development. The 3D model is a concept drawn from the layout plan and is not to scale. Resort and amenities are proposed and subject to approval. Plot details are subject to approved documents.</p>
+      <p class="footer-base"><a href="#">Privacy</a><a href="#">Terms</a><span>&copy; 2026 MegEstates</span></p>
+    </div>
+  </footer>
+
+  <nav class="quickbar" aria-label="Quick contact">
+    <a href="index.html#contact">Call</a>
+    <a href="index.html#contact">WhatsApp</a>
+    <a class="quickbar-primary" href="index.html?interest=Site%20visit%20%C2%B7%20The%20Lucids%20Resort#contact">Enquire</a>
+  </nav>
+</body>
+</html>

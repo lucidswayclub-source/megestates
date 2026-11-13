@@ -1,4 +1,3 @@
-import { PLOTS } from './plots.js';
 import { initMotion, flipCards, scrollToTarget } from './motion.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -7,80 +6,30 @@ const clamp01 = (v) => Math.min(1, Math.max(0, v));
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isDesktop = () => window.matchMedia('(min-width: 900px)').matches;
 
-// ---------- Sample project data (working titles; replace with approved records) ----------
+// ---------- Projects ----------
+// The Lucids Resort figures come from its VMRDA layout plan; Hasini Infra
+// projects use Hasini Infra's own names, places and images.
 const PROJECTS = [
-  { id: 'venture-01', name: 'Venture 01', type: 'plots', region: 'visakhapatnam', location: 'Visakhapatnam', sizes: [150, 200], facing: ['East', 'North', 'West', 'South'], chips: ['40 plots', '150–200 sq. yd.', 'All facings'], status: 'Booking open', live: true, render: 'plots-aerial' },
-  { id: 'residential-02', name: 'Residential 02', type: 'apartments', region: 'visakhapatnam', location: 'Visakhapatnam', sizes: null, facing: ['East'], chips: ['12 floors', '2 & 3 BHK', 'Under construction'], status: 'Under construction', live: true, render: 'tower' },
-  { id: 'venture-03', name: 'Venture 03', type: 'plots', region: 'andhra', location: 'Andhra Pradesh', sizes: [167, 240], facing: ['East', 'West'], chips: ['Plots', '167–240 sq. yd.', 'East & West'], status: 'Booking open', live: true, render: 'plots-golden' },
-  { id: 'venture-04', name: 'Venture 04', type: 'plots', isNew: true, region: 'hyderabad', location: 'Hyderabad', sizes: [150, 180], facing: ['North', 'East'], chips: ['Plots', '150–180 sq. yd.', 'North & East'], status: 'Coming soon', live: false, render: 'villa-midday' },
-  { id: 'commercial-05', name: 'Commercial 05', type: 'commercial', region: 'visakhapatnam', location: 'Visakhapatnam', sizes: null, facing: ['East'], chips: ['Commercial', 'Bulk inventory', 'Enquiries open'], status: 'Enquiries open', live: true, render: 'tower-golden' },
-  { id: 'venture-06', name: 'Venture 06', type: 'plots', isNew: true, region: 'visakhapatnam', location: 'Visakhapatnam', sizes: [180, 267], facing: ['East', 'South'], chips: ['Villa plots', '180–267 sq. yd.', 'East & South'], status: 'New launch', live: true, render: 'villa-golden' },
+  {
+    id: 'lucids', name: 'The Lucids Resort', type: 'plots', region: 'vmrda', location: 'VMRDA region, Andhra Pradesh',
+    chips: ['102 plots', '12 m roads', 'Resort at the gate'], status: 'Explore in 3D', live: true,
+    img: 'assets/lucids/aerial-day.webp', alt: "Artist's impression of The Lucids Resort from the air", cap: "Artist's impression",
+    href: 'resort.html', feature: true,
+  },
+  { id: 'platinum-county', name: 'Platinum County', type: 'apartments', region: 'guntur', location: 'Amaravati Road, Guntur', chips: ['Apartments', 'Current project'], status: 'Current', live: true, img: 'assets/hasini/platinum-county.jpg' },
+  { id: 'royal-castle', name: 'Royal Castle', type: 'apartments', region: 'bhimavaram', location: 'Bhimavaram', chips: ['Apartments', 'Current project'], status: 'Current', live: true, img: 'assets/hasini/royal-castle.jpg' },
+  { id: 'pcr-pride', name: 'PCR Pride', type: 'apartments', region: 'bhimavaram', location: 'Bhimavaram', chips: ['Apartments', 'Current project'], status: 'Current', live: true, img: 'assets/hasini/pcr-pride.jpg' },
+  { id: 'vibhav-towers', name: 'Vibhav Towers', type: 'completed', region: 'kakinada', location: 'Kakinada', chips: ['Apartments', 'Completed'], status: 'Completed', img: 'assets/hasini/vibhav-towers.jpg' },
+  { id: 'madhu-kranthi', name: 'Madhu Kranthi', type: 'completed', region: 'andhra', location: 'Andhra Pradesh', chips: ['Apartments', 'Completed'], status: 'Completed', img: 'assets/hasini/madhu-kranthi.jpg' },
+  { id: 'sai-lakshmi', name: 'Sai Lakshmi', type: 'completed', region: 'andhra', location: 'Andhra Pradesh', chips: ['Apartments', 'Completed'], status: 'Completed', img: 'assets/hasini/sai-lakshmi.jpg' },
 ];
 
-// ---------- Concept renders: lazy, one per frame ----------
-let renderShot = null;
-let rendersFailed = false;
-const pending = [];
-let draining = false;
-
-const renderReady = import('./renders.js')
-  .then((mod) => { renderShot = mod.renderShot; })
-  .catch(() => { rendersFailed = true; });
-
-function markReady(img) {
-  const frame = img.closest('.media');
-  if (frame) frame.classList.add('is-ready');
-}
-
-function paint(img) {
-  if (img.dataset.painted) return;
-  img.dataset.painted = '1';
-  let url = null;
-  try {
-    url = renderShot && renderShot(img.dataset.render, Number(img.dataset.w), Number(img.dataset.h));
-  } catch (err) {
-    url = null;
-  }
-  if (!url) {
-    // Without WebGL the frame keeps a calm neutral fill instead of a broken image
-    img.style.display = 'none';
-    markReady(img);
-    return;
-  }
-  img.src = url;
-  if (img.complete) markReady(img);
-  else img.addEventListener('load', () => markReady(img), { once: true });
-}
-
-// Paint one render per frame. Hidden tabs get no animation frames, so a timer
-// takes over there and the images are ready when the visitor switches back.
-const nextTick = (fn) => (document.hidden ? setTimeout(fn, 16) : requestAnimationFrame(fn));
-
-function drain() {
-  if (draining) return;
-  draining = true;
-  const step = () => {
-    const img = pending.shift();
-    if (!img) { draining = false; return; }
-    paint(img);
-    nextTick(step);
-  };
-  renderReady.then(() => nextTick(step));
-}
-
-const renderObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    renderObserver.unobserve(entry.target);
-    pending.push(entry.target);
-  });
-  drain();
-}, { rootMargin: '600px 0px' });
-
-function observeRenders(scope = document) {
-  $$('img[data-render]', scope).forEach((img) => {
-    if (rendersFailed) { img.style.display = 'none'; markReady(img); return; }
-    renderObserver.observe(img);
+// ---------- Images fade in once loaded ----------
+function observeMedia(scope = document) {
+  $$('.media img', scope).forEach((img) => {
+    const frame = img.closest('.media');
+    if (img.complete && img.naturalWidth) frame.classList.add('is-ready');
+    else img.addEventListener('load', () => frame.classList.add('is-ready'), { once: true });
   });
 }
 
@@ -119,32 +68,32 @@ const tabs = $$('.tabs [role="tab"]');
 const tabInk = $('.tab-ink');
 const countEl = $('#result-count');
 const emptyEl = $('#empty');
-const filterState = { type: 'all', region: 'all', size: 'all', facing: 'all' };
+const filterState = { type: 'all', region: 'all' };
 
-cardsEl.innerHTML = PROJECTS.map((p) => `
-  <article class="card" data-id="${p.id}">
+cardsEl.innerHTML = PROJECTS.map((p) => {
+  const tag = p.href ? 'a' : 'article';
+  const by = p.feature ? 'A MegEstates venture' : 'Hasini Infra';
+  return `
+  <${tag} class="card${p.feature ? ' card-feature' : ''}" data-id="${p.id}"${p.href ? ` href="${p.href}"` : ''}>
     <figure class="media">
-      <img data-render="${p.render}" data-w="720" data-h="540" alt="Concept render for ${p.name}">
-      <span class="cap">Concept render</span>
+      <img src="${p.img}" alt="${p.alt || `${p.name}, ${p.location}`}" loading="lazy">
+      <span class="cap">${p.cap || 'Hasini Infra image'}</span>
       <span class="status${p.live ? ' is-live' : ''}">${p.status}</span>
     </figure>
     <div class="card-body">
-      <div class="card-row"><h3>${p.name}</h3><span class="card-price">On request</span></div>
+      <p class="card-by">${by}</p>
+      <div class="card-row"><h3>${p.name}</h3>${p.href ? '<span class="card-go" aria-hidden="true"></span>' : ''}</div>
       <p class="card-loc">${p.location}</p>
       <div class="chips">${p.chips.map((c) => `<span>${c}</span>`).join('')}</div>
+      ${p.href ? '' : `<a class="link-arrow card-enquire" href="#contact" data-interest="${p.name} · Hasini Infra">Enquire</a>`}
     </div>
-  </article>`).join('');
+  </${tag}>`;
+}).join('');
 
 function matches(p) {
   const f = filterState;
-  if (f.type === 'new' ? !p.isNew : f.type !== 'all' && p.type !== f.type) return false;
+  if (f.type !== 'all' && p.type !== f.type) return false;
   if (f.region !== 'all' && p.region !== f.region) return false;
-  if (f.facing !== 'all' && !p.facing.includes(f.facing)) return false;
-  if (f.size !== 'all') {
-    if (!p.sizes) return false;
-    const [lo, hi] = f.size.split('-').map(Number);
-    if (p.sizes[1] < lo || p.sizes[0] > hi) return false;
-  }
   return true;
 }
 
@@ -184,7 +133,7 @@ filtersForm.addEventListener('change', (e) => {
 filtersForm.addEventListener('reset', () => {
   // Wait for the browser to reset the selects before reading them
   setTimeout(() => {
-    Object.assign(filterState, { region: 'all', size: 'all', facing: 'all' });
+    Object.assign(filterState, { region: 'all' });
     applyFilters();
   });
 });
@@ -199,7 +148,7 @@ const howSection = $('#how');
 const howTexts = $$('.how-text');
 const howImgs = $$('.how-img');
 const howSteps = $$('.how-steps button');
-const insetPlots = [PLOTS[0], PLOTS[13], PLOTS[21], PLOTS[30]];
+const insetPlots = [['Plot 14', '12 m road'], ['Plot 34', 'Marked on the ground'], ['Plot 107', 'As on the layout plan'], ['Plot 115', 'Next to the resort']];
 let currentStep = -1;
 
 function setStep(i) {
@@ -220,9 +169,9 @@ function setStep(i) {
     el.classList.toggle('is-active', k === i);
     el.setAttribute('aria-current', k === i ? 'step' : 'false');
   });
-  const plot = insetPlots[i];
-  $('#inset-id').textContent = plot.id;
-  $('#inset-meta').textContent = `${plot.area} sq. yd. · ${plot.facing}`;
+  const [id, meta] = insetPlots[i];
+  $('#inset-id').textContent = id;
+  $('#inset-meta').textContent = meta;
 }
 
 howSteps.forEach((btn) => {
@@ -245,20 +194,19 @@ const words = revealWords.textContent.trim().split(/\s+/);
 revealWords.innerHTML = words.map((w) => `<span class="w">${w}</span>`).join(' ');
 const wordSpans = $$('.w', revealWords);
 
-// ---------- Stat cards from the sample plot data ----------
+// ---------- Stat cards from the layout plan ----------
 function buildBars(el, values, highlight) {
-  el.innerHTML = values.map((v, i) => `<i data-h="${Math.round(v * 100)}" style="--d:${i * 0.04}s"${highlight(v, i) ? ' class="hi"' : ''}></i>`).join('');
+  const max = Math.max(...values);
+  el.innerHTML = values.map((v, i) => `<i data-h="${Math.round((v / max) * 100)}" style="--d:${i * 0.04}s"${highlight(v, i) ? ' class="hi"' : ''}></i>`).join('');
 }
-const COLS = 8;
-const perColumn = Array.from({ length: COLS }, (_, c) => PLOTS.filter((p, i) => i % COLS === c && p.status === 'available').length / 5);
-const maxCol = Math.max(...perColumn);
-buildBars($('#bars-available'), perColumn.map((v) => Math.max(v, 0.08)), (v) => v === maxCol);
-buildBars($('#bars-sizes'), PLOTS.slice(0, 12).map((p) => p.area / 200), (v) => v === 1);
-const floorProgress = Array.from({ length: 12 }, (_, f) => (f < 5 ? 1 : f < 8 ? 0.6 : 0.06));
-buildBars($('#bars-floors'), floorProgress, (v) => v === 1);
-
-const availablePct = Math.round((PLOTS.filter((p) => p.status === 'available').length / PLOTS.length) * 100);
-const countTargets = { 'stat-available': availablePct, 'stat-floors': 5 };
+// Plots per block from south to north, then the west block and the small groups
+const PLOTS_BY_BLOCK = [20, 20, 22, 22, 11, 2, 3, 2];
+const ROAD_AREAS = [1645.75, 1560.26, 1597.41, 1597.41, 1597.41, 1035.75, 787.55, 563.9, 328.03];
+const AMENITY_AREAS = [208.59, 372.38, 248.75, 301.98, 367.56, 301.96, 327.77, 185.75, 274.12, 263.31, 201.25, 201.25, 297.37];
+buildBars($('#bars-plots'), PLOTS_BY_BLOCK, (v) => v === 22);
+buildBars($('#bars-roads'), ROAD_AREAS, (v) => v === Math.max(...ROAD_AREAS));
+buildBars($('#bars-amenity'), AMENITY_AREAS, (v) => v === Math.max(...AMENITY_AREAS));
+const countTargets = { 'stat-plots': 102, 'stat-amenity': 13 };
 
 function countUp(el, target) {
   if (reduceMotion) { el.textContent = target; return; }
@@ -303,18 +251,15 @@ const walkSection = $('#plots');
 const walkStops = $$('.walk-stops li');
 const walkBar = $('#walk-bar');
 const plotTip = $('#plot-tip');
-const plotById = new Map(PLOTS.map((p) => [p.id, p]));
-const STATUS_TEXT = { available: 'Available', reserved: 'Reserved', booked: 'Booked', sold: 'Sold', 'not-for-sale': 'Not for sale' };
 let estate = null;
 
-import('./estate3d.js')
-  .then(({ createEstate }) => {
-    estate = createEstate($('#estate'), {
+import('./lucids3d.js')
+  .then(({ createLucids }) => {
+    estate = createLucids($('#estate'), {
       theme: currentTheme(),
-      onHover: (id, x, y) => {
-        if (!id) { plotTip.hidden = true; return; }
-        const plot = plotById.get(id);
-        plotTip.textContent = `${plot.id} · ${plot.area} sq. yd. · ${STATUS_TEXT[plot.status]}`;
+      onHover: (info, x, y) => {
+        if (!info) { plotTip.hidden = true; return; }
+        plotTip.innerHTML = `<b>${info.title}</b> · ${info.meta}`;
         plotTip.style.left = `${x}px`;
         plotTip.style.top = `${y}px`;
         plotTip.hidden = false;
@@ -328,6 +273,11 @@ import('./estate3d.js')
 // ---------- Enquiry context ----------
 const enquiryTag = $('#enquiry-tag');
 const subjectInput = $('#f-subject');
+const interestParam = new URLSearchParams(window.location.search).get('interest');
+if (interestParam) {
+  enquiryTag.textContent = interestParam;
+  subjectInput.value = interestParam;
+}
 document.addEventListener('click', (e) => {
   const link = e.target.closest('[data-interest]');
   if (!link) return;
@@ -394,7 +344,7 @@ function onScroll() {
     const kp = clamp01(-kr.top / Math.max(1, walkSection.offsetHeight - vh));
     if (estate) estate.setProgress(kp);
     walkBar.style.transform = `scaleX(${kp.toFixed(3)})`;
-    const stop = kp < 0.3 ? 0 : kp < 0.6 ? 1 : 2;
+    const stop = kp < 0.14 ? 0 : kp < 0.32 ? 1 : 2;
     walkStops.forEach((li, i) => li.classList.toggle('is-on', i === stop));
   });
 }
@@ -406,7 +356,7 @@ window.addEventListener('resize', () => {
 
 // ---------- Start ----------
 if (reduceMotion) wordSpans.forEach((s) => s.classList.add('is-lit'));
-observeRenders();
+observeMedia();
 observeReveals();
 applyFilters({ animate: false });
 initMotion();

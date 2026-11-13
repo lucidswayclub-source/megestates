@@ -1,0 +1,194 @@
+/* The Lucids Resort venture page: a fixed 3D scene with chapters scrolling
+   over it, then a pinned gallery reel, the plan and the map. */
+
+.venture main { position: relative; z-index: 1; }
+
+/* ---------- Fixed scene ---------- */
+.scene { position: fixed; inset: 0; z-index: 0; background: var(--page); transition: background-color 0.5s var(--ease); }
+.scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+.scene-veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--page) 78%, transparent) 0%, transparent 46%),
+    linear-gradient(0deg, color-mix(in srgb, var(--page) 70%, transparent) 0%, transparent 26%),
+    linear-gradient(180deg, color-mix(in srgb, var(--page) 60%, transparent) 0%, transparent 16%);
+  transition: opacity 0.6s var(--ease);
+}
+.scene.is-right .scene-veil {
+  background:
+    linear-gradient(270deg, color-mix(in srgb, var(--page) 78%, transparent) 0%, transparent 46%),
+    linear-gradient(0deg, color-mix(in srgb, var(--page) 70%, transparent) 0%, transparent 26%),
+    linear-gradient(180deg, color-mix(in srgb, var(--page) 60%, transparent) 0%, transparent 16%);
+}
+.scene-cap { position: absolute; right: 16px; bottom: 14px; font-size: 0.6875rem; color: var(--muted); pointer-events: none; }
+.scene.is-off { visibility: hidden; }
+.no-webgl .scene { background: var(--page) url("../assets/lucids/aerial-dusk.webp") center / cover no-repeat; }
+.no-webgl .scene-veil { background: color-mix(in srgb, var(--page) 55%, transparent); }
+
+/* ---------- Chapter rail ---------- */
+.rail {
+  position: fixed; z-index: 5; right: 24px; top: 50%; transform: translateY(-50%);
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 14px;
+  transition: opacity 0.4s var(--ease);
+}
+.rail.is-off { opacity: 0; pointer-events: none; }
+.rail a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; color: var(--muted); font-size: 0.75rem; }
+.rail a::after { content: ''; width: 8px; height: 8px; border-radius: 50%; border: 1px solid currentColor; transition: transform 0.4s var(--ease), background 0.4s; }
+.rail a span { opacity: 0; transform: translateX(6px); transition: opacity 0.3s, transform 0.3s var(--ease); }
+.rail a:hover span, .rail a.is-on span { opacity: 1; transform: none; }
+.rail a.is-on { color: var(--ink); }
+.rail a.is-on::after { background: var(--ink); transform: scale(1.35); }
+[data-theme="dark"] .rail a.is-on::after { background: var(--gold); border-color: var(--gold); }
+@media (max-width: 899px) { .rail { display: none; } }
+
+/* ---------- Chapters ---------- */
+.chap { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: 96px 0 48px; pointer-events: none; }
+/* Chapters fill the screen, so a link to one lands exactly on it */
+.chap { scroll-margin-top: -84px; }
+.chap .wrap { width: min(1240px, 100% - 32px); }
+.chap a, .chap button, .chap-card { pointer-events: auto; }
+.chap-card {
+  width: min(400px, 100%); padding: 26px; border-radius: var(--radius-l);
+  background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(40px) scale(0.97);
+  transition: opacity 0.7s var(--ease), transform 0.9s var(--ease);
+}
+.chap.is-on .chap-card { opacity: 1; transform: none; }
+.chap-right .chap-card { margin-left: auto; margin-right: 40px; }
+.chap-card .h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.chap-card > p:not(.chap-num) { margin-top: 12px; color: var(--muted); }
+.chap-num { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 14px; color: var(--gold-deep); }
+[data-theme="dark"] .chap-num { color: var(--gold); }
+.chap-card .hint, .chap-card .fine { font-size: 0.8125rem; }
+.chap-card .btn-row { margin-top: 20px; }
+
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; }
+.tags li { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.8125rem; }
+.tags .tag-gold { border: 0; background: var(--gold-grad); color: #0A0A0A; font-weight: 600; }
+
+.legend { list-style: none; display: grid; gap: 8px; margin: 18px 0 0; padding: 0; font-size: 0.875rem; }
+.legend li { display: flex; align-items: center; gap: 10px; }
+.legend i { width: 18px; height: 12px; border-radius: 3px; border: 1.5px solid; }
+.lg-plot { background: #EED9B0; border-color: #FFFFFF !important; box-shadow: 0 0 0 1px #D8C49D; }
+.lg-amenity { background: #E3DDCF; border-color: #A87917 !important; }
+.lg-mortgaged { background: #D9C7A3; border-color: #B3A68D !important; }
+[data-theme="dark"] .lg-plot { background: #231D13; border-color: #D4AF37 !important; box-shadow: none; }
+[data-theme="dark"] .lg-amenity { background: #15130F; border-color: #8A6D1F !important; }
+[data-theme="dark"] .lg-mortgaged { background: #14120E; border-color: #5C4C26 !important; }
+
+.amenities { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 18px 0 10px; padding: 0; }
+.amenities li { display: grid; gap: 6px; font-size: 0.6875rem; text-align: center; color: var(--muted); }
+.amenities img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
+.chap.is-on .amenities li { animation: pop 0.6s var(--ease) both; }
+.chap.is-on .amenities li:nth-child(2) { animation-delay: 0.08s; }
+.chap.is-on .amenities li:nth-child(3) { animation-delay: 0.16s; }
+.chap.is-on .amenities li:nth-child(4) { animation-delay: 0.24s; }
+.chap.is-on .amenities li:nth-child(5) { animation-delay: 0.32s; }
+@keyframes pop { from { opacity: 0; transform: translateY(14px) scale(0.9); } }
+
+/* Opening chapter */
+.chap-hero { align-items: flex-end; padding-bottom: clamp(48px, 9vh, 96px); }
+.venture-title { font-size: clamp(3.4rem, 11vw, 9.5rem); line-height: 0.92; letter-spacing: -0.055em; margin-top: 14px; }
+.venture-title span { display: block; }
+.venture-title span:last-child { padding-left: 0.6em; }
+[data-theme="dark"] .venture-title span:last-child { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.js .venture-title span { animation: rise 1.1s var(--ease) both; }
+.js .venture-title span:last-child { animation-delay: 0.12s; }
+.js .chap-hero .eyebrow, .js .venture-lede, .js .hero-facts, .js .scroll-hint { animation: fade 1s var(--ease) 0.35s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(0.5em); clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 -10% 0); } }
+@keyframes fade { from { opacity: 0; transform: translateY(12px); } }
+.venture-lede { margin-top: 18px; font-size: clamp(1.05rem, 1.6vw, 1.3rem); max-width: 28ch; }
+.hero-facts { display: flex; flex-wrap: wrap; gap: 12px 36px; margin-top: 28px; }
+.hero-facts p { display: grid; }
+.hero-facts b { font-family: var(--font-head); font-weight: 500; font-size: clamp(1.6rem, 2.6vw, 2.2rem); letter-spacing: -0.03em; }
+[data-theme="dark"] .hero-facts b { background: var(--gold-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-facts span { font-size: 0.8125rem; color: var(--muted); }
+.scroll-hint { display: flex; align-items: center; gap: 10px; margin-top: 32px; font-size: 0.8125rem; color: var(--muted); }
+.scroll-hint i { position: relative; width: 18px; height: 28px; border: 1.5px solid currentColor; border-radius: 10px; }
+.scroll-hint i::after { content: ''; position: absolute; left: 50%; top: 5px; width: 2px; height: 6px; margin-left: -1px; border-radius: 2px; background: currentColor; animation: wheel 1.6s ease-in-out infinite; }
+@keyframes wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(9px); } }
+
+.nav-back { font-size: 0.8125rem; color: var(--muted); text-decoration: none; }
+.nav-back::before { content: '\2190\00a0'; }
+.nav-back:hover { color: var(--ink); }
+@media (max-width: 1080px) { .nav-back { display: none; } }
+
+/* Phones: cards sit low so the model stays visible above them */
+@media (max-width: 899px) {
+  .chap { align-items: flex-end; padding: 80px 0 calc(84px + env(safe-area-inset-bottom)); }
+  .chap-right .chap-card { margin: 0; }
+  .chap-card { padding: 20px; }
+  .chap-card .h2 { font-size: 1.6rem; }
+  .chap-hero { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .scene-veil, .scene.is-right .scene-veil {
+    background:
+      linear-gradient(0deg, color-mix(in srgb, var(--page) 82%, transparent) 0%, transparent 52%),
+      linear-gradient(180deg, color-mix(in srgb, var(--page) 60%, transparent) 0%, transparent 14%);
+  }
+  .scene-cap { top: 80px; bottom: auto; left: 16px; right: auto; }
+  .amenities { gap: 6px; margin-bottom: 0; }
+  .amenities span, .chap-card .fine, .chap-card .hint { display: none; }
+  .chap-card > p:not(.chap-num) { margin-top: 8px; font-size: 0.9375rem; }
+  .chap-num { margin-bottom: 8px; }
+  .legend { grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 0.8125rem; margin-top: 12px; }
+  .tags { margin-top: 12px; }
+  .hero-facts { gap: 10px 22px; }
+  .hero-facts b { font-size: 1.5rem; }
+  .chap { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Gallery reel ---------- */
+.reel { position: relative; background: var(--page); }
+.reel-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; gap: clamp(18px, 3vh, 32px); padding-top: 72px; }
+.reel-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 10px 24px; }
+.reel-track { display: flex; gap: 16px; padding-inline: max(16px, (100vw - 1240px) / 2); will-change: transform; }
+@media (min-width: 900px) { .reel-track { padding-inline: max(40px, (100vw - 1240px) / 2); } }
+.shot { position: relative; flex: 0 0 auto; height: min(58vh, 520px); aspect-ratio: 4 / 5; margin: 0; border-radius: var(--radius-l); overflow: hidden; background: var(--media-bg); }
+.shot-wide { aspect-ratio: 16 / 10; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); transition: transform 1.2s var(--ease); }
+.shot.is-in img { transform: scale(1); }
+.shot figcaption { position: absolute; left: 12px; right: 12px; bottom: 12px; display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--chip); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.shot figcaption b { font-size: 0.875rem; font-weight: 600; }
+.shot figcaption span { font-size: 0.6875rem; color: var(--muted); }
+.reel-bar { height: 3px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.reel-bar i { display: block; height: 100%; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; }
+[data-theme="dark"] .reel-bar i { background: var(--gold-grad); }
+@media (max-width: 899px) {
+  .shot { height: 52svh; aspect-ratio: 3 / 4; max-width: 82vw; }
+  .shot-wide { aspect-ratio: 4 / 5; }
+}
+/* Without scripting the reel simply scrolls sideways */
+html:not(.js) .reel-track, .reel.is-static .reel-track { overflow-x: auto; scroll-snap-type: x mandatory; }
+.reel.is-static .reel-sticky { position: static; height: auto; padding: 80px 0; }
+.reel.is-static .shot { scroll-snap-align: center; }
+
+/* ---------- Plan and map ---------- */
+.where { background: var(--page); }
+.where-grid { display: grid; gap: 20px; margin-top: 32px; }
+@media (min-width: 900px) { .where-grid { grid-template-columns: 1.05fr 1fr; gap: 28px; align-items: start; } }
+.plan-card { margin: 0; padding: 14px; background: #FFFFFF; border-radius: var(--radius-l); border: 1px solid var(--line); }
+.plan-img { display: block; overflow: hidden; border-radius: 12px; }
+.plan-img img { width: 100%; height: auto; transition: transform 0.8s var(--ease); }
+.plan-img:hover img { transform: scale(1.04); }
+.plan-card figcaption { margin-top: 10px; font-size: 0.75rem; color: #66635D; }
+.where-side { display: grid; gap: 18px; align-content: start; }
+.where-side .btn { justify-self: start; }
+.map-card { overflow: hidden; border-radius: var(--radius-l); border: 1px solid var(--line); aspect-ratio: 4 / 3; background: var(--media-bg); }
+.map-card iframe { width: 100%; height: 100%; border: 0; display: block; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0; background: var(--line); border-radius: var(--radius-m); overflow: hidden; border: 1px solid var(--line); }
+.facts div { padding: 14px 16px; background: var(--panel); }
+.facts dt { font-size: 0.75rem; color: var(--muted); }
+.facts dd { margin: 4px 0 0; font-size: 0.9375rem; font-weight: 500; }
+
+.venture-cta { background: var(--page); padding-top: 0; }
+.cta-box { padding: clamp(32px, 5vw, 56px); border-radius: var(--radius-l); background: var(--panel); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.cta-box .btn-row { margin-top: 0; }
+[data-theme="dark"] .cta-box { background: radial-gradient(120% 140% at 100% 0%, rgba(212, 175, 55, 0.18), transparent 60%), var(--panel); }
+.venture .footer { position: relative; z-index: 1; }
+.venture .quickbar { z-index: 120; }
+
+@media (prefers-reduced-motion: reduce) {
+  .chap-card, .shot img { transition: none; transform: none; }
+  .js .venture-title span, .js .chap-hero .eyebrow, .js .venture-lede, .js .hero-facts, .js .scroll-hint { animation: none; }
+}
