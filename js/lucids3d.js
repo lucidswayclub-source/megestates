@@ -160,10 +160,10 @@ function signTexture(text, sub) {
   ctx.strokeRect(10, 10, 1004, 140);
   ctx.fillStyle = grad;
   ctx.textAlign = 'center';
-  ctx.font = '600 64px "Inter Tight", Inter, sans-serif';
+  ctx.font = '600 64px Manrope, sans-serif';
   ctx.fillText(text, 512, sub ? 88 : 102);
   if (sub) {
-    ctx.font = '500 26px Inter, sans-serif';
+    ctx.font = '500 26px Manrope, sans-serif';
     ctx.fillText(sub, 512, 128);
   }
   const tex = new THREE.CanvasTexture(canvas);
@@ -190,7 +190,15 @@ const SHOTS_CENTRED = SHOTS.map((shot, i) => (
  * Returns null when WebGL is unavailable so the page can fall back gracefully.
  * onHover(info, clientX, clientY) receives { title, meta } or null.
  */
-export function createLucids(canvas, { onHover, theme = 'light', fixedSize = false } = {}) {
+/**
+ * Options for the home page's cinematic film:
+ *   path: [{ p, pos, look, fov }] camera keys in build-progress units; the
+ *         camera glides along smooth curves through them
+ *   cinematic: opaque night backdrop, filmic tone mapping and bloom, so lit
+ *         windows, lamps and the gold survey lines glow
+ *   lite: skip bloom on modest devices
+ */
+export function createLucids(canvas, { onHover, theme = 'light', fixedSize = false, path = null, cinematic = false, lite = false, details = false, onFrame = null } = {}) {
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -205,6 +213,40 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x000000, 115, 250);
   const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 400);
+
+  // ---------- Cinematic look ----------
+  // Bloom comes in as soon as its modules load; until then (or in lite mode)
+  // the scene renders directly.
+  let composer = null;
+  let bloomPass = null;
+  if (cinematic) {
+    renderer.setClearColor(0x050505, 1);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.18;
+    if (!lite) {
+      Promise.all([
+        import('three/addons/postprocessing/EffectComposer.js'),
+        import('three/addons/postprocessing/RenderPass.js'),
+        import('three/addons/postprocessing/UnrealBloomPass.js'),
+        import('three/addons/postprocessing/OutputPass.js'),
+      ]).then(([{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }]) => {
+        const c = new EffectComposer(renderer);
+        c.addPass(new RenderPass(scene, camera));
+        bloomPass = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.6, 0.5, 0.62);
+        c.addPass(bloomPass);
+        c.addPass(new OutputPass());
+        composer = c;
+        resize();
+      }).catch(() => {});
+    }
+  }
+
+  // Smooth camera curves through the film's keys
+  let pathCurves = null;
+  if (path) {
+    const curve = (k) => new THREE.CatmullRomCurve3(path.map((s) => new THREE.Vector3(...s[k])), false, 'centripetal');
+    pathCurves = { pos: curve('pos'), look: curve('look') };
+  }
 
   const hemi = new THREE.HemisphereLight();
   const key = new THREE.DirectionalLight();
@@ -588,6 +630,136 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
   const dust = new THREE.Points(dustGeo, dustMat);
   scene.add(dust);
 
+  // ---------- Detail layer (home film) ----------
+  // Plot numbers engraved on the ground, traffic on the
+  // main road, and named anchor points the page can pin callouts to.
+  const detail = details ? buildDetails() : null;
+  function buildDetails() {
+    // One texture atlas holds every plot number; all labels share one mesh
+    const COLS = 16;
+    const ROWS = Math.ceil(PLOTS.length / COLS);
+    const CW = 128; const CH = 64;
+    const atlas = document.createElement('canvas');
+    atlas.width = COLS * CW;
+    atlas.height = ROWS * CH;
+    const ctx = atlas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const pos = []; const uv = []; const idx = [];
+    PLOTS.forEach((plot, i) => {
+      const col = i % COLS; const row = Math.floor(i / COLS);
+      ctx.font = `${plot.kind === 'amenity' ? 500 : 600} 40px Manrope, sans-serif`;
+      ctx.fillText(plot.kind === 'amenity' ? `A${plot.n}` : String(plot.n), col * CW + CW / 2, row * CH + CH / 2 + 2);
+      // Lay the label flat on the plot, square to its front edge, reading north-up
+      const [tl, tr] = plot.quad;
+      const c = v2(centroid(plot.quad));
+      const a = v2(tl); const b = v2(tr);
+      const u = new THREE.Vector2(b.x - a.x, b.y - a.y).normalize();
+      const up = new THREE.Vector2(u.y, -u.x);
+      const hx = 0.8; const hz = 0.4;
+      const corner = (sx, sz) => [c.x + u.x * hx * sx + up.x * hz * sz, 0.05, c.y + u.y * hx * sx + up.y * hz * sz];
+      const base = pos.length / 3;
+      pos.push(...corner(-1, -1), ...corner(1, -1), ...corner(1, 1), ...corner(-1, 1));
+      const u0 = col / COLS; const u1 = (col + 1) / COLS;
+      const v1 = 1 - row / ROWS; const v0 = 1 - (row + 1) / ROWS;
+      uv.push(u0, v0, u1, v0, u1, v1, u0, v1);
+      idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+    });
+    const tex = new THREE.CanvasTexture(atlas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    const labelGeo = new THREE.BufferGeometry();
+    labelGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    labelGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    labelGeo.setIndex(idx);
+    const labelMat = new THREE.MeshBasicMaterial({ map: tex, color: 0xf0d47a, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    const labels = new THREE.Mesh(labelGeo, labelMat);
+    labels.renderOrder = 3;
+    scene.add(labels);
+
+
+    // Traffic: cars with headlights and tail-lights on the main road
+    const carBody = new THREE.BoxGeometry(0.55, 0.32, 1.1);
+    const carMat = new THREE.MeshStandardMaterial({ color: 0x1b1b1d, roughness: 0.35, metalness: 0.6 });
+    const headMat = new THREE.MeshBasicMaterial({ color: 0xfff3d6 });
+    const tailMat = new THREE.MeshBasicMaterial({ color: 0xff3b2f });
+    const cars = [0, 1, 2].map((i) => {
+      const g = new THREE.Group();
+      const body = new THREE.Mesh(carBody, carMat);
+      body.position.y = 0.2;
+      const lampGeo = new THREE.BoxGeometry(0.12, 0.07, 0.04);
+      [-0.18, 0.18].forEach((x) => {
+        const h = new THREE.Mesh(lampGeo, headMat); h.position.set(x, 0.22, -0.56); g.add(h);
+        const r = new THREE.Mesh(lampGeo, tailMat); r.position.set(x, 0.24, 0.56); g.add(r);
+      });
+      // A pool of headlight on the road ahead
+      const beam = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 2.4), new THREE.MeshBasicMaterial({ color: 0xffe9b8, transparent: true, opacity: 0.22, depthWrite: false, blending: THREE.AdditiveBlending }));
+      beam.rotation.x = -Math.PI / 2;
+      beam.position.set(0, 0.03, -1.8);
+      g.add(body, beam);
+      g.visible = false;
+      scene.add(g);
+      // Northbound in the east lane, southbound in the west lane
+      return { g, dir: i === 1 ? 1 : -1, lane: i === 1 ? -0.42 : 0.42, phase: i * 0.37, speed: 0.022 + i * 0.004 };
+    });
+
+    // Named points the page pins its callouts to (world coordinates)
+    const pt = (sx, sy, h = 0) => { const q = v2([sx, sy]); return [q.x, h, q.y]; };
+    const plotC = (n) => { const pl = PLOTS.find((x) => x.n === n && x.kind !== 'amenity'); const c = centroid(pl.quad); return pt(c[0], c[1], 0.2); };
+    const anchors = {
+      boundary: pt(D[0], D[1], 0.3),
+      arch: [gate.x, 4.5, gate.y + 0.2],
+      wall: pt((D[0] + E[0]) / 2, (D[1] + E[1]) / 2, 0.5),
+      mainRoad: pt(roadC(520), 520, 0.1),
+      crossRoad: pt(820, 600, 0.1),
+      plot1: plotC(1),
+      plot89: plotC(89),
+      mortgaged: plotC(70),
+      club: pt(300, 822, 2.6),
+      pool: pt(296, 888, 0.3),
+      cricket: pt(192, 850, 1.6),
+      swOpen: pt(250, 900, 0.1),
+      seOpen: pt(760, 1036, 0.1),
+    };
+    return { labelMat, cars, anchors };
+  }
+
+  function updateDetails(t) {
+    if (!detail) return;
+    const p = state.eased;
+    // Plot numbers engrave in once the plots have settled
+    detail.labelMat.opacity = 0.85 * smooth(stage(p, 0.42, 0.56));
+    // Traffic once the roads are laid
+    const on = p > 0.3;
+    detail.cars.forEach((car) => {
+      car.g.visible = on;
+      if (!on) return;
+      const f = ((t * car.speed + car.phase) % 1);
+      const y = car.dir < 0 ? 1300 - f * 1260 : 40 + f * 1260;
+      const q = v2([roadC(y) + car.lane / K, y]);
+      car.g.position.set(q.x, 0, q.y);
+      car.g.rotation.y = Math.atan(0.088) + (car.dir < 0 ? 0 : Math.PI);
+    });
+  }
+
+  // Build progress, for the page's live readout
+  function stats() {
+    const p = state.eased;
+    let placed = 0; let total = 0;
+    plotEntries.forEach((e) => {
+      if (e.plot.kind === 'amenity') return;
+      total += 1;
+      if (e.group.scale.x > 0.5) placed += 1;
+    });
+    return {
+      plots: placed,
+      plotsTotal: total,
+      wall: Math.round(100 * stage(p, 0.05, 0.22)),
+      resort: Math.round(100 * stage(p, 0.56, 0.75)),
+    };
+  }
+
   // ---------- Theme ----------
   const state = { paused: false, progress: 0, eased: 0, pointerX: 0, pointerY: 0, hovered: null, visible: true, theme: THEMES.light };
 
@@ -718,7 +890,32 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
   // ---------- Camera ----------
   const tmpPos = new THREE.Vector3();
   const tmpLook = new THREE.Vector3();
+  let baseFov = 36;
+  function placeCameraOnPath(t) {
+    const p = state.eased;
+    let i = 0;
+    while (i < path.length - 2 && p > path[i + 1].p) i++;
+    const a = path[i]; const b = path[i + 1];
+    const k = clamp01((p - a.p) / (b.p - a.p));
+    const u = (i + k) / (path.length - 1);
+    pathCurves.pos.getPoint(u, tmpPos);
+    pathCurves.look.getPoint(u, tmpLook);
+    // Lens: each key can set its own focal length; narrow screens widen it
+    const fov = THREE.MathUtils.lerp(a.fov || 38, b.fov || 38, smooth(k)) * (baseFov / 36);
+    if (Math.abs(camera.fov - fov) > 0.01) { camera.fov = fov; camera.updateProjectionMatrix(); }
+    // Handheld: a slow, layered drift, plus a touch of pointer parallax
+    tmpPos.x += Math.sin(t * 0.21) * 0.35 + Math.sin(t * 0.53) * 0.12 + state.pointerX * 1.2;
+    tmpPos.y += Math.sin(t * 0.17 + 1) * 0.25 + state.pointerY * 0.6;
+    tmpLook.x += Math.sin(t * 0.37 + 2) * 0.12;
+    tmpLook.y += Math.sin(t * 0.29) * 0.08;
+    camera.position.copy(tmpPos);
+    camera.lookAt(tmpLook);
+    // A whisper of roll on the big moves
+    camera.rotateZ(Math.sin(u * Math.PI * 3) * 0.012);
+  }
+
   function placeCamera(t) {
+    if (pathCurves) { placeCameraOnPath(t); return; }
     const p = state.eased;
     // Full-screen landscape leaves room for the text cards; portrait and framed views centre the subject
     const portrait = camera.aspect < 0.9;
@@ -746,8 +943,15 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     // Narrow screens need a wider lens so the layout stays in frame
-    camera.fov = camera.aspect < 0.8 ? 58 : camera.aspect < 1.2 ? 46 : 36;
+    baseFov = camera.aspect < 0.8 ? 58 : camera.aspect < 1.2 ? 46 : 36;
+    camera.fov = baseFov;
     camera.updateProjectionMatrix();
+    if (composer) {
+      composer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1 : 1.5));
+      composer.setSize(w, h);
+      // Bloom at half resolution: soft glow, a fraction of the cost
+      bloomPass.resolution.set(w / 2, h / 2);
+    }
   }
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(fixedSize ? document.documentElement : canvas.parentElement);
@@ -803,7 +1007,8 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
   function animate() {
     frame = requestAnimationFrame(animate);
     if (!state.visible || state.paused) return;
-    const t = clock.getElapsedTime();
+    // Film capture drives a virtual clock so every frame is reproducible
+    const t = typeof window.__megFilmTime === 'number' ? window.__megFilmTime : clock.getElapsedTime();
     const dt = Math.min(0.1, t - last);
     last = t;
     // Ease towards the scroll position so wheel steps glide
@@ -811,9 +1016,42 @@ export function createLucids(canvas, { onHover, theme = 'light', fixedSize = fal
     dust.position.y = Math.sin(t * 0.3) * 0.3;
     dust.rotation.y = t * 0.015;
     updateBuild(t);
+    updateDetails(t);
     placeCamera(t);
-    renderer.render(scene, camera);
+    if (composer) composer.render();
+    else renderer.render(scene, camera);
+    if (onFrame) onFrame(view);
   }
+
+  // What the page needs to pin HTML to the 3D scene each frame
+  const projV = new THREE.Vector3();
+  const camDir = new THREE.Vector3();
+  const camRight = new THREE.Vector3();
+  const M_PER_UNIT = 0.25 / K; // the plan draws the 12 m road 48 px wide: 1 px = 0.25 m
+  const view = {
+    get anchors() { return detail ? detail.anchors : {}; },
+    // Screen position (CSS px within the canvas) of a world point
+    project(xyz) {
+      projV.set(xyz[0], xyz[1], xyz[2]).project(camera);
+      const w = canvas.clientWidth; const h = canvas.clientHeight;
+      return { x: (projV.x + 1) / 2 * w, y: (1 - projV.y) / 2 * h, visible: projV.z < 1 && Math.abs(projV.x) < 1.15 && Math.abs(projV.y) < 1.15 };
+    },
+    // Compass heading of the camera, degrees clockwise from plan north
+    get heading() {
+      camera.getWorldDirection(camDir);
+      return (THREE.MathUtils.radToDeg(Math.atan2(camDir.x, -camDir.z)) + 360) % 360;
+    },
+    // Screen pixels per real metre at the point the camera is looking at
+    pxPerMetre() {
+      camera.getWorldDirection(camDir);
+      camRight.crossVectors(camDir, camera.up).normalize();
+      const a = view.project([tmpLook.x, tmpLook.y, tmpLook.z]);
+      const b = view.project([tmpLook.x + camRight.x / M_PER_UNIT * 10, tmpLook.y, tmpLook.z + camRight.z / M_PER_UNIT * 10]);
+      return Math.hypot(b.x - a.x, b.y - a.y) / 10;
+    },
+    stats,
+    progress: () => state.eased,
+  };
   animate();
 
   return {

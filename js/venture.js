@@ -8,22 +8,6 @@ const smooth = (t) => t * t * (3 - 2 * t);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
 
-// ---------- Theme ----------
-const themeBtn = $('.theme-btn');
-const currentTheme = () => (root.dataset.theme === 'dark' ? 'dark' : 'light');
-function syncThemeBtn() {
-  themeBtn.setAttribute('aria-pressed', String(currentTheme() === 'dark'));
-  themeBtn.setAttribute('aria-label', currentTheme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-}
-themeBtn.addEventListener('click', () => {
-  const theme = currentTheme() === 'dark' ? 'light' : 'dark';
-  root.dataset.theme = theme;
-  try { localStorage.setItem('meg-theme', theme); } catch (err) { /* private mode: theme just isn't remembered */ }
-  syncThemeBtn();
-  if (venture) venture.setTheme(theme);
-});
-syncThemeBtn();
-
 // ---------- Menu ----------
 const nav = $('#nav');
 const menuBtn = $('.menu-btn');
@@ -39,6 +23,7 @@ $$('.nav-links a').forEach((a) => a.addEventListener('click', () => setMenu(fals
 let lenis = null;
 if (window.Lenis && !reduceMotion) {
   lenis = new window.Lenis({ duration: 1.15, smoothWheel: true });
+  root.classList.add('lenis');
   const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
   requestAnimationFrame(raf);
   document.addEventListener('click', (e) => {
@@ -73,9 +58,9 @@ function showTip(info, x, y) {
   tip.hidden = false;
 }
 
-import('./lucids3d.js')
+import('./lucids3d.js?v=20261116f')
   .then(({ createLucids }) => {
-    venture = createLucids(canvas, { theme: currentTheme(), onHover: showTip, fixedSize: true });
+    venture = createLucids(canvas, { theme: 'dark', onHover: showTip, fixedSize: true });
     if (!venture) root.classList.add('no-webgl');
     else update();
   })

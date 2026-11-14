@@ -1,20 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>MegEstates | Plots, Apartments & Developments</title>
-  <meta name="description" content="MegEstates: The Lucids Resort plotted venture in the VMRDA region and the Hasini Infra residences across Andhra Pradesh. Explore the venture in 3D.">
-  <meta name="theme-color" content="#F3F2EF">
+  <meta name="description" content="Fly in to The Lucids Resort, the MegEstates plotted venture in the VMRDA region, and explore the Hasini Infra residences across Andhra Pradesh.">
+  <meta name="theme-color" content="#070707">
   <link rel="icon" href="assets/logo.png" type="image/png">
   <meta property="og:title" content="MegEstates | Plots, Apartments & Developments">
   <meta property="og:description" content="Find the plot you'll call home.">
-  <meta property="og:image" content="assets/lucids/aerial-dusk.webp">
+  <meta property="og:image" content="assets/lucids/graded/aerial-dusk.webp">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="css/home.css?v=20261116f">
 
   <script type="importmap">
     {
@@ -24,23 +25,28 @@
       }
     }
   </script>
-  <script>
-    (function () {
-      var theme;
-      try { theme = localStorage.getItem('meg-theme'); } catch (err) {}
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-      document.documentElement.dataset.theme = theme;
-      document.documentElement.classList.add('js');
-    })();
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script>document.documentElement.classList.add('js', 'is-intro');</script>
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/home.js?v=20261116f"></script>
 </head>
 <body>
+
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="pre-inner">
+      <!-- The logo assembles in three parts, catches the light, then flies to the nav -->
+      <div class="pre-logo" id="pre-logo">
+        <i class="pl-glow"></i>
+        <img class="pl-mark" src="assets/logo-transparent.png" alt="" width="791" height="517">
+        <img class="pl-arc" src="assets/logo-transparent.png" alt="" width="791" height="517">
+        <img class="pl-words" src="assets/logo-transparent.png" alt="" width="791" height="517">
+        <i class="pl-shine"></i>
+      </div>
+      <p class="pre-kicker">MegEstates presents</p>
+      <p class="pre-title">The Lucids Resort</p>
+      <div class="pre-line"><i id="pre-bar"></i></div>
+    </div>
+  </div>
 
   <header class="nav" id="nav">
     <div class="wrap nav-row">
@@ -48,19 +54,14 @@
         <img src="assets/logo-transparent.png" alt="MegEstates" width="791" height="517">
       </a>
       <nav class="nav-links" id="nav-links" aria-label="Primary">
-        <a href="#finder">Projects</a>
-        <a href="#how">How it works</a>
-        <a href="#plots">Plots</a>
-        <a href="#partner">Partner</a>
+        <a href="#tour">The tour</a>
+        <a href="#venture">3D venture</a>
+        <a href="#projects">Projects</a>
+        <a href="#process">How it works</a>
         <a href="#contact">Contact</a>
       </nav>
       <div class="nav-end">
-        <span class="nav-cities">Andhra Pradesh</span>
-        <button class="theme-btn" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
-          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.2A8 8 0 1 1 9.8 4a6.4 6.4 0 0 0 10.2 10.2z"/></svg>
-        </button>
-        <a class="btn btn-dark btn-sm" href="#contact">Enquire</a>
+        <a class="btn btn-gold btn-sm" href="#contact">Enquire</a>
         <button class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
       </div>
     </div>
@@ -68,204 +69,215 @@
 
   <main id="top">
 
-    <!-- Hero -->
-    <section class="hero">
-      <div class="wrap hero-top">
-        <h1 class="hero-title">
-          <span class="line"><span>Find the plot</span></span>
-          <span class="line"><span>you'll call home</span></span>
-        </h1>
-        <div class="hero-side">
-          <p>MegEstates is the group behind The Lucids Resort venture and the Hasini Infra residences across Andhra Pradesh.</p>
-          <a class="btn btn-dark" href="#finder">Explore projects</a>
-        </div>
-      </div>
-
-      <div class="wrap hero-media">
-        <figure class="hero-frame media">
-          <img src="assets/lucids/aerial-dusk.webp" alt="Artist's impression of The Lucids Resort venture from the air at dusk" fetchpriority="high">
-          <figcaption class="cap">The Lucids Resort &middot; Artist's impression</figcaption>
-        </figure>
-        <aside class="hero-card">
-          <figure class="media hero-card-img">
-            <img src="assets/lucids/clubhouse.webp" alt="Artist's impression of the proposed clubhouse at The Lucids Resort">
+    <!-- Flight: satellite descent through the clouds onto the venture -->
+    <section class="flight" id="flight" aria-label="Fly in to The Lucids Resort">
+      <div class="flight-sticky">
+        <!-- Everything the drone camera sees moves together -->
+        <div class="flight-cam" aria-hidden="true">
+          <div class="flight-map" id="flight-map"></div>
+          <canvas class="flight-blur" id="flight-blur"></canvas>
+          <div class="flight-fallback"><img src="assets/lucids/graded/aerial-day.webp" alt=""></div>
+          <div class="flight-haze"></div>
+          <figure class="flight-arrive">
+            <div class="arrive-move">
+              <img class="arrive-soft" src="assets/lucids/graded/aerial-day-soft.webp" alt="" fetchpriority="high" decoding="async">
+              <img class="arrive-feather" src="assets/lucids/graded/aerial-day.webp" alt="" decoding="async">
+              <img class="arrive-solid" src="assets/lucids/graded/aerial-day.webp" alt="" decoding="async">
+            </div>
           </figure>
-          <div class="hero-card-body">
-            <p class="eyebrow">The Lucids Resort &middot; VMRDA region</p>
-            <p class="hero-card-title">102 plots and a resort at the gate</p>
-            <a class="link-arrow" href="resort.html">Explore in 3D</a>
+          <div class="flight-air"></div>
+          <div class="flight-labels">
+            <span class="geo" data-z="2.4,6.6" data-ll="79.4,15.6">Andhra Pradesh</span>
+            <span class="geo geo-sea" data-z="2.4,7.4" data-ll="87.6,14.2">Bay of Bengal</span>
+            <span class="geo" data-z="8.2,11.8" data-ll="83.2185,17.6868">Visakhapatnam</span>
+            <span class="geo" data-z="9.4,13.2" data-ll="83.3956,18.1067">Vizianagaram</span>
           </div>
-        </aside>
+          <div class="site-pin" id="site-pin">
+            <i class="ring"></i><i class="ring"></i><i class="dot"></i>
+            <span class="pin-tag">The Lucids Resort</span>
+          </div>
+          <div class="clouds" id="clouds"></div>
+          <div class="flight-tone"></div>
+        </div>
+        <div class="flight-vignette" aria-hidden="true"></div>
+        <div class="flight-shade" aria-hidden="true"></div>
+        <div class="flare" aria-hidden="true"><i></i></div>
+
+        <!-- Drone viewfinder -->
+        <div class="viewfinder" aria-hidden="true">
+          <i class="vf-corner vf-tl"></i><i class="vf-corner vf-tr"></i><i class="vf-corner vf-bl"></i><i class="vf-corner vf-br"></i>
+          <div class="vf-rec"><b></b>REC <span id="vf-tc">00:00:00:00</span></div>
+          <div class="vf-meta">4K &middot; 24 FPS &middot; LUT MegEstates Gold</div>
+          <div class="reticle" id="reticle"><i></i></div>
+        </div>
+        <button class="fs-btn" type="button" id="fs-btn" aria-label="Watch fullscreen" hidden>
+          <svg class="i-enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>
+          <svg class="i-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>
+          <span>Fullscreen</span>
+        </button>
+
+        <div class="flight-intro">
+          <p class="eyebrow">MegEstates &middot; Andhra Pradesh</p>
+          <h1 class="display">Find the plot<br><em>you'll call home</em></h1>
+          <p class="lede">Fly in from orbit to The Lucids Resort: 102 plots and a resort at the gate, in the VMRDA region.</p>
+          <div class="btn-row">
+            <button class="btn btn-gold" type="button" id="autopilot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+              Play the flight
+            </button>
+            <a class="btn btn-ghost" href="#projects">See all projects</a>
+          </div>
+        </div>
+
+
+        <div class="hud" aria-hidden="true">
+          <div class="hud-cell"><span>Altitude</span><b id="hud-alt">—</b></div>
+          <div class="hud-cell"><span>Position</span><b>18.0137&deg; N &nbsp;83.3765&deg; E</b></div>
+          <div class="hud-cell hud-compass"><span>Heading</span><b id="hud-hdg">000&deg;</b></div>
+        </div>
+
+        <div class="flight-arrive-copy">
+          <p class="eyebrow">You've arrived</p>
+          <h2 class="display-2">The Lucids Resort</h2>
+          <p class="lede">The same ground you just flew over, as it's planned. 102 plots on 12 m roads, with a resort at the gate.</p>
+          <div class="btn-row">
+            <a class="btn btn-gold" href="#tour">Take the tour</a>
+            <a class="btn btn-ghost" href="#contact" data-interest="Site visit · The Lucids Resort">Book a site visit</a>
+          </div>
+          <p class="cap-inline">Artist's impression &middot; resort and amenities are proposed and subject to approval</p>
+        </div>
+
+        <div class="flight-scroll" aria-hidden="true"><i></i><span>Scroll to descend</span></div>
+        <div class="flight-progress" aria-hidden="true"><i id="flight-bar"></i></div>
+        <p class="flight-credit">Imagery &copy; Esri, Maxar, Earthstar Geographics</p>
       </div>
     </section>
 
-    <!-- Finder -->
-    <section class="section finder" id="finder">
+    <!-- Drone tour of the venture renders -->
+    <section class="tour" id="tour" aria-labelledby="tour-title">
+      <div class="tour-sticky">
+        <h2 class="sr-only" id="tour-title">A drone tour of The Lucids Resort</h2>
+        <div class="tour-stage" id="tour-stage"></div>
+        <div class="tour-shade" aria-hidden="true"></div>
+        <div class="wrap tour-ui">
+          <div class="tour-copy" id="tour-copy" aria-live="polite"></div>
+          <ol class="tour-rail" id="tour-rail"></ol>
+        </div>
+        <p class="tour-cap">Artist's impression &middot; proposed, subject to approval</p>
+      </div>
+    </section>
+
+    <!-- Numbers from the layout plan -->
+    <section class="section facts" aria-labelledby="facts-title">
       <div class="wrap">
-        <div class="sec-head split" data-reveal>
-          <h2 class="h2">Our projects</h2>
-          <p class="muted">A new plotted venture, and the Hasini Infra residences handled by the MegEstates team.</p>
+        <div class="sec-head">
+          <p class="eyebrow">Read from the VMRDA layout plan</p>
+          <h2 id="facts-title" class="h2">Every plot numbered, every road measured, <em>before you visit.</em></h2>
         </div>
-
-        <div class="finder-panel" data-reveal>
-          <div class="tabs" role="tablist" aria-label="Project type">
-            <button role="tab" aria-selected="true" data-type="all">All</button>
-            <button role="tab" aria-selected="false" data-type="plots">Plotted ventures</button>
-            <button role="tab" aria-selected="false" data-type="apartments">Apartments</button>
-            <button role="tab" aria-selected="false" data-type="completed">Completed</button>
-            <span class="tab-ink" aria-hidden="true"></span>
-          </div>
-          <form class="filters" id="filters">
-            <label class="select"><span class="sr-only">Location</span>
-              <select name="region">
-                <option value="all">All locations</option>
-                <option value="vmrda">VMRDA region</option>
-                <option value="guntur">Guntur</option>
-                <option value="bhimavaram">Bhimavaram</option>
-                <option value="kakinada">Kakinada</option>
-                <option value="andhra">Elsewhere in Andhra Pradesh</option>
-              </select>
-            </label>
-            <div class="filter-actions">
-              <button type="reset" class="btn-text">Clear filters</button>
-              <span class="result-count" id="result-count" aria-live="polite"></span>
-            </div>
-          </form>
-        </div>
-
-        <div class="cards" id="cards"></div>
-        <p class="empty" id="empty" hidden>No projects match these filters. <button class="btn-text" type="button" id="empty-reset">Clear filters</button></p>
-        <p class="note" data-reveal>The Lucids Resort images are artist's impressions; resort and amenities are proposed and subject to approval. Hasini Infra images are from Hasini Infra and are conceptual.</p>
+        <dl class="facts-grid">
+          <div class="fact" data-reveal><dt>Residential plots</dt><dd><span data-count="102">0</span></dd></div>
+          <div class="fact" data-reveal><dt>Internal roads</dt><dd><span data-count="12">0</span><small> m wide</small></dd></div>
+          <div class="fact" data-reveal><dt>Amenity plots</dt><dd><span data-count="13">0</span></dd></div>
+          <div class="fact" data-reveal><dt>From Visakhapatnam</dt><dd>~<span data-count="40">0</span><small> km</small></dd></div>
+        </dl>
+        <p class="note">Distance is straight-line from the city centre. Plot availability is shared on enquiry.</p>
       </div>
     </section>
 
-    <!-- How it works: sticky steps with swapping media -->
-    <section class="how" id="how" aria-labelledby="how-title">
-      <div class="how-sticky">
-        <div class="wrap">
-          <div class="sec-head split">
-            <h2 id="how-title" class="h2">See what we offer and how it works</h2>
-            <p class="muted">One team and one record for your plot, from the first call to registration.</p>
-          </div>
-          <div class="how-grid">
-            <div class="how-copy">
-              <div class="how-texts">
-                <article class="how-text is-active">
-                  <h3>Your requirements</h3>
-                  <p>Tell us the location, size, facing and budget you have in mind. We shortlist plots that fit.</p>
-                  <a class="btn btn-line" href="#contact">Share requirements</a>
-                </article>
-                <article class="how-text">
-                  <h3>Site visit</h3>
-                  <p>Walk the venture with our team. Every plot is marked on the ground with its number from the layout plan.</p>
-                  <a class="btn btn-line" href="#contact">Book a site visit</a>
-                </article>
-                <article class="how-text">
-                  <h3>Documents</h3>
-                  <p>Review the layout plan, title papers and plot details before you commit.</p>
-                  <a class="btn btn-line" href="resort.html#location">See the layout plan</a>
-                </article>
-                <article class="how-text">
-                  <h3>Registration</h3>
-                  <p>Registration support and a clear handover of your plot, with nothing left unexplained.</p>
-                  <a class="btn btn-line" href="#contact">Talk to us</a>
-                </article>
-              </div>
-              <ol class="how-steps">
-                <li><button type="button" class="is-active" data-step="0">Your requirements</button></li>
-                <li><button type="button" data-step="1">Site visit</button></li>
-                <li><button type="button" data-step="2">Documents</button></li>
-                <li><button type="button" data-step="3">Registration</button></li>
-              </ol>
+    <!-- 3D venture build follows the scroll -->
+    <section class="plan-film" id="venture" aria-labelledby="plan-title">
+      <div class="plan-sticky">
+        <canvas id="estate" role="img" aria-label="3D concept of The Lucids Resort built from its layout plan: the plan is surveyed onto the ground, the compound wall and entrance arch rise, roads are laid, plots appear, then the proposed resort is built"></canvas>
+        <div class="plan-vignette" aria-hidden="true"></div>
+        <div class="plan-callouts" id="plan-callouts" aria-hidden="true"></div>
+        <div class="plot-tip" id="plot-tip" hidden></div>
+
+        <!-- Survey readout: live build stats, a compass and a true scale bar -->
+        <div class="plan-hud" aria-hidden="true">
+          <dl class="ph-stats">
+            <div><dt>Plots placed</dt><dd><span id="ph-plots">0</span><small> / 102</small></dd></div>
+            <div><dt>Compound wall</dt><dd><span id="ph-wall">0</span><small>%</small></dd></div>
+            <div><dt>Resort</dt><dd><span id="ph-resort">0</span><small>%</small></dd></div>
+          </dl>
+          <div class="ph-tools">
+            <div class="ph-compass" id="ph-compass">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21"/><path class="ph-n" d="M24 6l4.5 18h-9z"/><path class="ph-s" d="M24 42l-4.5-18h9z"/></svg>
+              <span>N</span>
             </div>
-            <div class="how-media">
-              <figure class="media how-img is-active"><img src="assets/lucids/street.webp" alt="Artist's impression of the main road at The Lucids Resort" loading="lazy"></figure>
-              <figure class="media how-img"><img src="assets/lucids/aerial-day.webp" alt="Artist's impression of the marked plots from the air" loading="lazy"></figure>
-              <figure class="media how-img how-plan"><img src="assets/lucids/layout-plan.png" alt="The venture's VMRDA layout plan" loading="lazy"></figure>
-              <figure class="media how-img"><img src="assets/lucids/clubhouse.webp" alt="Artist's impression of the proposed clubhouse" loading="lazy"></figure>
-              <div class="how-inset" aria-hidden="true">
-                <p class="eyebrow">The Lucids Resort</p>
-                <p class="inset-id" id="inset-id">Plot 14</p>
-                <p class="inset-meta" id="inset-meta">12 m road</p>
-              </div>
-              <span class="cap">Artist's impression</span>
-            </div>
+            <div class="ph-scale"><i id="ph-scale-bar"></i><span id="ph-scale-label">20 m</span></div>
           </div>
         </div>
+
+        <header class="plan-head wrap">
+          <p class="eyebrow">The Lucids Resort &middot; from the layout plan</p>
+          <h2 id="plan-title" class="h2">Watch your plot <em>take shape</em></h2>
+        </header>
+
+        <div class="plan-chapters wrap" id="plan-chapters">
+          <article class="plan-ch"><p class="plan-num"><b>01</b> The survey</p><h3>Drawn from the plan</h3><p>It begins on paper: the VMRDA layout plan, traced onto the ground line for line.</p></article>
+          <article class="plan-ch"><p class="plan-num"><b>02</b> Wall and arch</p><h3>A gated venture</h3><p>A compound wall encloses every boundary, with an entrance arch at the gate. Planned.</p></article>
+          <article class="plan-ch"><p class="plan-num"><b>03</b> The roads</p><h3>Through the gate</h3><p>12 m roads, laid exactly as on the plan, run past every block.</p></article>
+          <article class="plan-ch"><p class="plan-num"><b>04</b> The plots</p><h3>102 plots, numbered</h3><p>Plots rise from the gate northward, each numbered as on the plan. Hover any plot.</p></article>
+          <article class="plan-ch"><p class="plan-num"><b>05</b> The resort</p><h3>A resort at the gate</h3><p>Clubhouse, pool and courts in the south-west open space. Proposed, subject to approval.</p></article>
+          <article class="plan-ch"><p class="plan-num"><b>06</b> The venture</p><h3>Pick your plot</h3><p>See it on the ground with our team, plot numbers and all.</p>
+            <div class="btn-row">
+              <a class="btn btn-gold" href="resort.html">Explore the venture</a>
+              <a class="btn btn-ghost" href="#contact" data-interest="Site visit · The Lucids Resort">Book a site visit</a>
+            </div>
+          </article>
+        </div>
+
+        <ol class="plan-rail" id="plan-rail" aria-hidden="true"><li><i></i></li><li><i></i></li><li><i></i></li><li><i></i></li><li><i></i></li><li><i></i></li></ol>
+        <p class="plan-cap">Concept from the layout plan &middot; not to scale</p>
       </div>
     </section>
 
-    <!-- Statement and live inventory -->
-    <section class="section stats" aria-labelledby="stats-title">
+    <!-- Projects -->
+    <section class="section projects" id="projects" aria-labelledby="projects-title">
       <div class="wrap">
         <div class="sec-head split">
-          <h2 id="stats-title" class="h2 reveal-words">Every plot numbered, every road measured, before you visit.</h2>
-          <p class="muted">The Lucids Resort, read straight from its VMRDA layout plan.</p>
+          <div>
+            <p class="eyebrow">Portfolio</p>
+            <h2 id="projects-title" class="h2">Our projects</h2>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Project type">
+            <button role="tab" aria-selected="true" data-type="all">All</button>
+            <button role="tab" aria-selected="false" data-type="plots">Plotted</button>
+            <button role="tab" aria-selected="false" data-type="apartments">Apartments</button>
+            <button role="tab" aria-selected="false" data-type="completed">Completed</button>
+          </div>
         </div>
-        <div class="stat-cards">
-          <article class="stat-card" data-reveal>
-            <p class="stat-label">Residential plots &middot; by block</p>
-            <p class="stat-value"><span data-count id="stat-plots">0</span></p>
-            <div class="bars" id="bars-plots"></div>
-          </article>
-          <article class="stat-card" data-reveal>
-            <p class="stat-label">Internal roads &middot; area per road</p>
-            <p class="stat-value">12<small> m wide</small></p>
-            <div class="bars" id="bars-roads"></div>
-          </article>
-          <article class="stat-card" data-reveal>
-            <p class="stat-label">Amenity plots &middot; area per plot</p>
-            <p class="stat-value"><span data-count id="stat-amenity">0</span></p>
-            <div class="bars" id="bars-amenity"></div>
-          </article>
-        </div>
-        <p class="note">Figures from the layout plan. Plot availability is shared on enquiry.</p>
+        <div class="cards" id="cards"></div>
+        <p class="note">The Lucids Resort images are artist's impressions; resort and amenities are proposed and subject to approval. Hasini Infra images are from Hasini Infra and are conceptual.</p>
       </div>
     </section>
 
-    <!-- Walk the venture: the plot build follows the scroll -->
-    <section class="walk" id="plots" aria-labelledby="walk-title">
-      <div class="walk-sticky">
-        <div class="wrap walk-grid">
-          <div class="walk-copy">
-            <p class="eyebrow">The Lucids Resort &middot; 3D</p>
-            <h2 id="walk-title" class="h2">Watch your plot take shape</h2>
-            <ol class="walk-stops">
-              <li class="is-on"><span>01</span>The layout plan, surveyed</li>
-              <li><span>02</span>Compound wall and entrance arch</li>
-              <li><span>03</span>102 plots, then the resort</li>
-            </ol>
-            <div class="btn-row">
-              <a class="btn btn-dark" href="resort.html">Explore the venture</a>
-              <a class="btn btn-line" href="#contact" data-interest="Site visit · The Lucids Resort">Book a site visit</a>
-            </div>
-          </div>
-          <div class="walk-stage">
-            <canvas id="estate" role="img" aria-label="3D concept of The Lucids Resort: the layout plan is surveyed, the compound wall and entrance arch rise, plots appear, then the resort is built"></canvas>
-            <div class="plot-tip" id="plot-tip" hidden></div>
-            <span class="cap">Concept from the layout plan &middot; hover a plot</span>
-            <div class="walk-bar" aria-hidden="true"><i id="walk-bar"></i></div>
-          </div>
+    <!-- Process -->
+    <section class="section process" id="process" aria-labelledby="process-title">
+      <div class="wrap">
+        <div class="sec-head split">
+          <h2 id="process-title" class="h2">One team, <em>from first call to registration</em></h2>
+          <p class="muted">One team and one record for your plot, the whole way through.</p>
         </div>
+        <ol class="steps">
+          <li data-reveal><span class="step-n">01</span><h3>Your requirements</h3><p>Tell us the location, size, facing and budget you have in mind. We shortlist plots that fit.</p></li>
+          <li data-reveal><span class="step-n">02</span><h3>Site visit</h3><p>Walk the venture with our team. Every plot is marked on the ground with its number from the layout plan.</p></li>
+          <li data-reveal><span class="step-n">03</span><h3>Documents</h3><p>Review the layout plan, title papers and plot details before you commit.</p></li>
+          <li data-reveal><span class="step-n">04</span><h3>Registration</h3><p>Registration support and a clear handover of your plot, with nothing left unexplained.</p></li>
+        </ol>
       </div>
     </section>
 
-    <!-- Partner CTA -->
-    <section class="section partner" id="partner" aria-labelledby="partner-title">
-      <div class="wrap partner-grid">
-        <div class="partner-copy" data-reveal>
-          <h2 id="partner-title" class="h2">Bring your land or project to market</h2>
-          <p class="muted">For landowners, builders, developers and direct owners with multiple units. We work directly with owners, not intermediaries.</p>
-          <div class="btn-row">
-            <a class="btn btn-dark" href="#contact" data-interest="partner">Partner with us</a>
-            <a class="btn btn-line" href="#contact">Talk to the team</a>
-          </div>
-        </div>
-        <div class="deck" aria-hidden="true">
-          <figure class="media deck-card"><img src="assets/hasini/platinum-county.jpg" alt="" loading="lazy"></figure>
-          <figure class="media deck-card"><img src="assets/lucids/aerial-day.webp" alt="" loading="lazy"></figure>
-          <figure class="media deck-card"><img src="assets/lucids/pool-dusk.webp" alt="" loading="lazy"></figure>
-          <span class="cap">Project images</span>
+    <!-- Partner -->
+    <section class="partner" id="partner" aria-labelledby="partner-title">
+      <img src="assets/lucids/graded/pool-dusk.webp" alt="" loading="lazy" class="partner-bg">
+      <div class="wrap partner-inner" data-reveal>
+        <p class="eyebrow">For landowners and developers</p>
+        <h2 id="partner-title" class="h2">Bring your land or project <em>to market</em></h2>
+        <p class="muted">For landowners, builders, developers and direct owners with multiple units. We work directly with owners, not intermediaries.</p>
+        <div class="btn-row">
+          <a class="btn btn-gold" href="#contact" data-interest="partner">Partner with us</a>
+          <a class="btn btn-ghost" href="#contact">Talk to the team</a>
         </div>
       </div>
     </section>
@@ -274,7 +286,8 @@
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="wrap contact-grid">
         <div data-reveal>
-          <h2 id="contact-title" class="h2">Let's talk about your plot</h2>
+          <p class="eyebrow">Enquire</p>
+          <h2 id="contact-title" class="h2">Let's talk about <em>your plot</em></h2>
           <p class="muted">Share a few details and the team will get in touch.</p>
           <p class="enquiry-tag" id="enquiry-tag">General enquiry</p>
           <div class="offices">
@@ -298,7 +311,7 @@
             <label class="field"><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>
           </div>
           <label class="check"><input type="checkbox" name="consent" required><span>I agree to be contacted about this enquiry.</span></label>
-          <button class="btn btn-dark btn-block" type="submit">Send enquiry</button>
+          <button class="btn btn-gold btn-block" type="submit">Send enquiry</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -312,9 +325,9 @@
         <p>Realty | Construction | Developments</p>
       </div>
       <nav class="footer-links" aria-label="Footer">
-        <a href="#finder">Projects</a><a href="resort.html">The Lucids Resort</a><a href="#how">How it works</a><a href="#plots">Plots</a><a href="#partner">Partner</a><a href="#contact">Contact</a>
+        <a href="#tour">The tour</a><a href="resort.html">The Lucids Resort</a><a href="#projects">Projects</a><a href="#process">How it works</a><a href="#partner">Partner</a><a href="#contact">Contact</a>
       </nav>
-      <p class="footer-legal">The Lucids Resort images are artist's impressions; the resort and amenities are proposed and subject to approval. Hasini Infra project images are conceptual presentations by Hasini Infra. Project details and prices are subject to approved documents. Returns are not guaranteed.</p>
+      <p class="footer-legal">The Lucids Resort images are artist's impressions; the resort and amenities are proposed and subject to approval. Satellite imagery: Esri, Maxar, Earthstar Geographics. Hasini Infra project images are conceptual presentations by Hasini Infra. Project details and prices are subject to approved documents. Returns are not guaranteed.</p>
       <p class="footer-base"><a href="#">Privacy</a><a href="#">Terms</a><span>&copy; 2026 MegEstates</span></p>
     </div>
   </footer>
