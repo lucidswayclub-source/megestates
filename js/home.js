@@ -1,4 +1,4 @@
-import { createFlight } from './flight.js?v=20261116f';
+import { createFlight } from './flight.js?v=20261118f';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -389,7 +389,7 @@ function updatePlanOverlay(view) {
 }
 
 let estate = null;
-import('./lucids3d.js?v=20261116f')
+import('./lucids3d.js?v=20261118f')
   .then(({ createLucids }) => {
     estate = createLucids($('#estate'), {
       theme: 'dark',

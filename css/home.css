@@ -671,3 +671,361 @@ html.film .flare { display: none !important; }
 .flight.is-sequence .flight-credit { display: block; }
 /* The web footage keeps the map labels and the site pin in shot */
 html.film-web .flight-labels, html.film-web .site-pin { display: block !important; }
+
+/* =========================================================
+   Exclusive metallic layer: black lit with champagne gold and
+   platinum silver, instead of flat black. The cinematic sections
+   (flight, tour, 3D film) keep their own black.
+   ========================================================= */
+:root {
+  --silver: #cfd4dc;
+  --silver-hi: #f1f3f6;
+  --platinum-text: linear-gradient(180deg, #ffffff 0%, #eceef2 45%, #c3c8d0 100%);
+  --metal-edge: linear-gradient(135deg, rgba(240, 212, 122, 0.55) 0%, rgba(206, 211, 219, 0.32) 38%, rgba(168, 121, 23, 0.4) 70%, rgba(232, 235, 240, 0.28) 100%);
+  --panel-fill: linear-gradient(155deg, rgba(30, 28, 24, 0.9) 0%, rgba(15, 15, 17, 0.92) 55%, rgba(24, 20, 13, 0.92) 100%);
+}
+html, body { background: #050506; }
+
+/* The backdrop: a fixed, composited layer, painted once, so scrolling costs nothing */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: transform;
+  background:
+    radial-gradient(60% 50% at 88% 4%, rgba(212, 175, 55, 0.24), rgba(212, 175, 55, 0) 70%),
+    radial-gradient(55% 48% at 4% 52%, rgba(196, 202, 212, 0.16), rgba(196, 202, 212, 0) 72%),
+    radial-gradient(65% 55% at 96% 96%, rgba(168, 121, 23, 0.2), rgba(168, 121, 23, 0) 70%),
+    radial-gradient(45% 40% at 30% 100%, rgba(220, 224, 232, 0.1), rgba(220, 224, 232, 0) 70%),
+    linear-gradient(115deg, rgba(0, 0, 0, 0) 26%, rgba(225, 229, 236, 0.08) 44%, rgba(240, 212, 122, 0.06) 52%, rgba(0, 0, 0, 0) 68%),
+    linear-gradient(160deg, #0c0c0e 0%, #060606 38%, #0b0a07 68%, #070708 100%);
+}
+
+/* Content sections let the backdrop through, each adding its own light */
+.facts, .projects, .process, .contact { background: transparent; isolation: isolate; }
+.facts::before, .projects::before, .process::before, .contact::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.facts::before { background: radial-gradient(70% 55% at 50% 0%, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0) 70%), radial-gradient(50% 55% at 0% 100%, rgba(205, 210, 218, 0.12), rgba(205, 210, 218, 0) 70%); }
+.projects::before { background: radial-gradient(55% 45% at 0% 8%, rgba(214, 219, 227, 0.14), rgba(214, 219, 227, 0) 70%), radial-gradient(60% 50% at 100% 92%, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0) 70%); }
+.process { border-block: 0; }
+.process::before {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(206, 211, 219, 0.35), rgba(240, 212, 122, 0.45), rgba(206, 211, 219, 0.35), rgba(0, 0, 0, 0)) top / 100% 1px no-repeat,
+    linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(206, 211, 219, 0.25), rgba(240, 212, 122, 0.3), rgba(206, 211, 219, 0.25), rgba(0, 0, 0, 0)) bottom / 100% 1px no-repeat,
+    radial-gradient(60% 70% at 50% 0%, rgba(220, 224, 232, 0.12), rgba(220, 224, 232, 0) 70%),
+    radial-gradient(40% 60% at 100% 100%, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0) 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0));
+}
+.contact::before { background: radial-gradient(50% 60% at 82% 45%, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0) 70%), radial-gradient(45% 45% at 8% 20%, rgba(214, 219, 227, 0.12), rgba(214, 219, 227, 0) 70%); }
+.partner::before { background: linear-gradient(90deg, rgba(6, 6, 7, 0.95) 0%, rgba(6, 6, 7, 0.75) 45%, rgba(6, 6, 7, 0.35) 100%), linear-gradient(0deg, rgba(6, 6, 7, 0.9) 0%, rgba(6, 6, 7, 0) 25%, rgba(6, 6, 7, 0) 75%, rgba(6, 6, 7, 0.9) 100%); }
+
+/* Platinum headings; the gold italics keep their gold */
+.facts .h2, .projects .h2, .process .h2, .partner .h2, .contact .h2, .where .h2, .reel .h2, .cta-box .h2, .card h3 {
+  background: var(--platinum-text); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Panels: dark metal with a gold-to-silver hairline */
+.card, .form, .ph-stats, .tabs, .cta-box, .plan-card, .quickbar {
+  border: 1px solid transparent;
+  background: var(--panel-fill) padding-box, var(--metal-edge) border-box;
+}
+.card { box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.9); }
+.card:hover { box-shadow: 0 34px 70px -40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(240, 212, 122, 0.25); }
+.card figure { background: #121214; }
+.field input, .field select { background: rgba(5, 5, 6, 0.7); border-color: rgba(206, 211, 219, 0.14); }
+.chips span { border-color: rgba(206, 211, 219, 0.2); }
+.btn-ghost { border-color: rgba(214, 219, 227, 0.35); }
+.btn-ghost:hover { border-color: var(--gold); }
+.offices, .footer-legal { border-top-color: rgba(206, 211, 219, 0.12); }
+
+/* Nav: deep metal when solid, with a silver-gold hairline */
+.nav.is-solid {
+  background: linear-gradient(180deg, rgba(12, 12, 14, 0.95), rgba(7, 7, 8, 0.92));
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(206, 211, 219, 0.3), rgba(240, 212, 122, 0.4), rgba(206, 211, 219, 0.3), rgba(0, 0, 0, 0)) 1;
+}
+@media (max-width: 899px) {
+  .nav-links, .nav.menu-open { background: linear-gradient(180deg, rgba(12, 12, 14, 0.98), rgba(6, 6, 7, 0.98)); }
+}
+
+/* Footer: the darkest metal, with the same hairline */
+.footer {
+  background: linear-gradient(180deg, rgba(10, 10, 12, 0.7), rgba(4, 4, 5, 0.96));
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(206, 211, 219, 0.3), rgba(240, 212, 122, 0.45), rgba(206, 211, 219, 0.3), rgba(0, 0, 0, 0)) 1;
+}
+
+/* Title card: the logo appears in a pool of gold and platinum light */
+.preloader {
+  background:
+    radial-gradient(42% 38% at 50% 42%, rgba(212, 175, 55, 0.14), rgba(212, 175, 55, 0) 70%),
+    radial-gradient(70% 50% at 50% 100%, rgba(205, 210, 218, 0.06), rgba(205, 210, 218, 0) 70%),
+    linear-gradient(160deg, #0b0b0d 0%, #040404 50%, #0a0907 100%);
+}
+.preloader.is-flying { background: transparent; }
+
+/* =========================================================
+   Royal layer: Art Deco fan pattern, chandelier light, richer
+   black, gold-leaf foil and filigree dividers. All static and
+   painted once.
+   ========================================================= */
+:root {
+  /* Gold leaf: several golds with a bright highlight band, like foil */
+  --gold-grad: linear-gradient(135deg, #f9e9b0 0%, #e2c063 22%, #fff3c8 40%, #c9992c 60%, #e8c96a 80%, #a87917 100%);
+  --gold-text: linear-gradient(100deg, #f7e3a1 0%, #d9b250 28%, #fff1c4 46%, #c4932a 66%, #efcf74 100%);
+  --deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23e2c063' stroke-width='0.9'%3E%3Cpath d='M0 40a40 40 0 0 1 80 0M10 40a30 30 0 0 1 60 0M20 40a20 20 0 0 1 40 0M30 40a10 10 0 0 1 20 0'/%3E%3Cpath d='M-40 80a40 40 0 0 1 80 0M-30 80a30 30 0 0 1 60 0M-20 80a20 20 0 0 1 40 0M-10 80a10 10 0 0 1 20 0'/%3E%3Cpath d='M40 80a40 40 0 0 1 80 0M50 80a30 30 0 0 1 60 0M60 80a20 20 0 0 1 40 0M70 80a10 10 0 0 1 20 0'/%3E%3C/g%3E%3C/svg%3E");
+  --filigree: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='24' viewBox='0 0 420 24'%3E%3Cdefs%3E%3ClinearGradient id='l' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23d4af37' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23f0d47a'/%3E%3C/linearGradient%3E%3ClinearGradient id='r' x1='1' x2='0'%3E%3Cstop offset='0' stop-color='%23d4af37' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23f0d47a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 12H180' stroke='url(%23l)' stroke-width='1'/%3E%3Cpath d='M240 12H420' stroke='url(%23r)' stroke-width='1'/%3E%3Ccircle cx='187' cy='12' r='1.7' fill='%23f0d47a'/%3E%3Ccircle cx='233' cy='12' r='1.7' fill='%23f0d47a'/%3E%3Cpath d='M193 12h6M221 12h6' stroke='%23f0d47a' stroke-width='1'/%3E%3Cpath d='M210 2l10 10-10 10-10-10z' fill='none' stroke='%23f0d47a' stroke-width='1'/%3E%3Cpath d='M210 7.5l4.5 4.5-4.5 4.5-4.5-4.5z' fill='%23d4af37'/%3E%3C/svg%3E");
+}
+html { background: #050404; }
+body { background: transparent; }
+
+/* Richer base: warm, deep black with a velvet darkening toward the edges */
+body::before {
+  background:
+    radial-gradient(130% 100% at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%),
+    radial-gradient(60% 50% at 88% 4%, rgba(212, 175, 55, 0.24), rgba(212, 175, 55, 0) 70%),
+    radial-gradient(55% 48% at 4% 52%, rgba(196, 202, 212, 0.15), rgba(196, 202, 212, 0) 72%),
+    radial-gradient(65% 55% at 96% 96%, rgba(168, 121, 23, 0.22), rgba(168, 121, 23, 0) 70%),
+    radial-gradient(45% 40% at 30% 100%, rgba(220, 224, 232, 0.09), rgba(220, 224, 232, 0) 70%),
+    linear-gradient(115deg, rgba(0, 0, 0, 0) 26%, rgba(225, 229, 236, 0.08) 44%, rgba(240, 212, 122, 0.07) 52%, rgba(0, 0, 0, 0) 68%),
+    linear-gradient(160deg, #110e09 0%, #070605 38%, #120e07 68%, #080707 100%);
+}
+
+/* Art Deco fans: a fine gold lattice, strongest at the edges, fading behind content */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: transform;
+  background: var(--deco) 0 0 / 76px 76px repeat;
+  opacity: 0.24;
+  -webkit-mask-image: radial-gradient(ellipse 70% 66% at 50% 46%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.45) 46%, #000 100%);
+  mask-image: radial-gradient(ellipse 70% 66% at 50% 46%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.45) 46%, #000 100%);
+}
+
+/* Chandelier light: soft gold rays falling from the top of the page */
+html::after {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; will-change: transform;
+  background: repeating-conic-gradient(from 150deg at 50% -18%, rgba(244, 220, 150, 0.05) 0deg 1.6deg, rgba(0, 0, 0, 0) 1.6deg 6.5deg);
+  filter: blur(1.5px);
+  -webkit-mask-image: radial-gradient(62% 58% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 78%);
+  mask-image: radial-gradient(62% 58% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 78%);
+}
+
+/* Gold filigree divider opening each content section */
+.facts::after, .projects::after, .process::after, .contact::after, .footer::after {
+  content: ''; position: absolute; z-index: 1; left: 50%; top: 0; width: min(420px, 72%); height: 24px;
+  transform: translate(-50%, -50%); pointer-events: none;
+  background: var(--filigree) center / contain no-repeat;
+}
+.footer { position: relative; }
+
+/* Gold leaf on the gold buttons: the highlight band catches the light on hover */
+.btn-gold { background-size: 160% 160%; background-position: 0% 50%; transition: background-position 0.8s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+.btn-gold:hover { background-position: 100% 50%; }
+
+@media (prefers-reduced-motion: reduce) { html::after { display: none; } }
+
+/* =========================================================
+   Living backdrop: the royal layer as separate moving layers.
+   Everything moves by transform or opacity only (composited,
+   never repainted), so it costs nothing while scrolling.
+   ========================================================= */
+body::before, body::after, html::after { display: none; }
+
+.royal-bg {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  background:
+    radial-gradient(130% 100% at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(115deg, rgba(0, 0, 0, 0) 26%, rgba(225, 229, 236, 0.07) 44%, rgba(240, 212, 122, 0.06) 52%, rgba(0, 0, 0, 0) 68%),
+    linear-gradient(160deg, #110e09 0%, #070605 38%, #120e07 68%, #080707 100%);
+}
+.royal-bg > * { position: absolute; display: block; will-change: transform, opacity; }
+
+/* Drifting pools of gold and platinum light */
+.rb-glow { border-radius: 50%; }
+.rb-gold { right: -14vw; top: -22vh; width: 78vw; height: 70vh; background: radial-gradient(closest-side, rgba(212, 175, 55, 0.26), rgba(212, 175, 55, 0)); animation: rbDriftA 26s ease-in-out infinite alternate; }
+.rb-silver { left: -18vw; top: 22vh; width: 70vw; height: 66vh; background: radial-gradient(closest-side, rgba(200, 206, 216, 0.17), rgba(200, 206, 216, 0)); animation: rbDriftB 33s ease-in-out infinite alternate; }
+.rb-deep { right: -14vw; bottom: -26vh; width: 82vw; height: 72vh; background: radial-gradient(closest-side, rgba(168, 121, 23, 0.25), rgba(168, 121, 23, 0)); animation: rbDriftC 39s ease-in-out infinite alternate; }
+.rb-cursor { left: 0; top: 0; width: 46vw; height: 46vw; margin: -23vw 0 0 -23vw; background: radial-gradient(closest-side, rgba(240, 212, 122, 0.11), rgba(240, 212, 122, 0)); opacity: 0; transition: opacity 1.2s ease; }
+.rb-cursor.is-on { opacity: 1; }
+@keyframes rbDriftA { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-7vw, 5vh, 0) scale(1.1); } 100% { transform: translate3d(-3vw, 10vh, 0) scale(0.96); } }
+@keyframes rbDriftB { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(8vw, -6vh, 0) scale(1.12); } 100% { transform: translate3d(4vw, 6vh, 0) scale(0.95); } }
+@keyframes rbDriftC { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(-6vw, -7vh, 0) scale(1.08); } 100% { transform: translate3d(-10vw, 2vh, 0) scale(1.02); } }
+
+/* Pattern and glint share one parallax layer (moved from JS), so the glint
+   always lands on the gold lines. It is taller than the screen so the
+   parallax loops seamlessly over one pattern tile. */
+.rb-scroll {
+  left: 0; right: 0; top: -80px; bottom: -80px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 50%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.45) 46%, #000 100%);
+  mask-image: radial-gradient(ellipse 70% 62% at 50% 50%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.45) 46%, #000 100%);
+}
+.rb-pattern { position: absolute; inset: 0; display: block; background: var(--deco) 0 0 / 76px 76px repeat; opacity: 0.24; }
+/* The glint: a light band travelling across, visible only through the lattice */
+.rb-glint {
+  position: absolute; inset: 0; display: block; overflow: hidden; will-change: transform; transform: translateZ(0);
+  -webkit-mask: var(--deco) 0 0 / 76px 76px repeat; mask: var(--deco) 0 0 / 76px 76px repeat;
+  transition: opacity 0.6s ease;
+}
+/* While the page is scrolling the glint rests, so scrolling never pays for it */
+.is-scrolling .rb-glint { opacity: 0; }
+.is-scrolling .rb-glint b { animation-play-state: paused; }
+.rb-glint b {
+  position: absolute; top: -20%; bottom: -20%; left: 0; width: 30%; display: block; will-change: transform;
+  background: linear-gradient(100deg, rgba(255, 236, 180, 0) 0%, rgba(255, 236, 180, 0.5) 45%, rgba(255, 248, 225, 0.62) 50%, rgba(255, 236, 180, 0.5) 55%, rgba(255, 236, 180, 0) 100%);
+  transform: translate3d(-110%, 0, 0) skewX(-14deg);
+  animation: rbGlint 14s cubic-bezier(0.45, 0, 0.25, 1) 1.5s infinite;
+}
+@keyframes rbGlint { 0% { transform: translate3d(-110%, 0, 0) skewX(-14deg); } 45%, 100% { transform: translate3d(440%, 0, 0) skewX(-14deg); } }
+
+/* Chandelier: the rays sway and breathe */
+.rb-rays {
+  left: -20%; right: -20%; top: -10%; height: 90%; transform-origin: 50% -10%;
+  background: repeating-conic-gradient(from 150deg at 50% -8%, rgba(244, 220, 150, 0.05) 0deg 1.6deg, rgba(0, 0, 0, 0) 1.6deg 6.5deg);
+  -webkit-mask-image: radial-gradient(52% 70% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 80%);
+  mask-image: radial-gradient(52% 70% at 50% 0%, #000 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0) 80%);
+  animation: rbSway 19s ease-in-out infinite alternate, rbBreathe 7s ease-in-out infinite alternate;
+}
+@keyframes rbSway { from { transform: rotate(-2.2deg); } to { transform: rotate(2.2deg); } }
+@keyframes rbBreathe { from { opacity: 0.7; } to { opacity: 1; } }
+
+/* Modest devices keep the drift but drop the glint and cursor light */
+.lite .rb-glint, .lite .rb-cursor { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .royal-bg > *, .rb-glint b { animation: none !important; }
+  .rb-glint, .rb-cursor { display: none; }
+}
+
+/* =========================================================
+   Rhythm: royal and plain sections alternate.
+   Royal (the living backdrop shows): facts, process, footer.
+   Plain (deep solid black, no ornament): projects, contact.
+   The cinematic sections and the partner photo keep their own.
+   ========================================================= */
+.projects, .contact { background: #050505; }
+.projects::before, .contact::before,
+.projects::after, .contact::after { display: none; }
+
+/* Royal sections: let the backdrop through fully */
+.footer { background: linear-gradient(180deg, rgba(6, 5, 4, 0.15), rgba(4, 4, 4, 0.55)); }
+
+/* =========================================================
+   Floating pages: content sections become translucent sheets
+   that scroll over the living backdrop. The backdrop shows
+   around, between and faintly through every page.
+   Royal pages: light tint (the design shows strongly).
+   Plain pages: smoked black glass (the design shows faintly).
+   No live blur: the backdrop never stops moving, so a blur would
+   be recomputed every frame. The glass is translucency + light.
+   ========================================================= */
+:root { --sheet-gap: clamp(14px, 2.4vw, 34px); --sheet-radius: clamp(20px, 2.6vw, 36px); }
+
+.facts, .projects, .process, .contact, .partner {
+  margin: var(--sheet-gap) var(--sheet-gap) 0;
+  border-radius: var(--sheet-radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 220, 0.12),           /* light catching the top edge */
+    inset 0 0 0 1px rgba(214, 196, 150, 0.16),          /* fine gold-silver hairline */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    0 40px 90px -40px rgba(0, 0, 0, 0.95),              /* the page lifts off the backdrop */
+    0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+.facts::before, .projects::before, .process::before, .contact::before { border-radius: inherit; }
+
+/* Royal pages: barely tinted, so the pattern and light read through */
+.facts, .process {
+  background: linear-gradient(170deg, rgba(14, 12, 9, 0.28) 0%, rgba(6, 6, 6, 0.42) 60%, rgba(10, 9, 7, 0.36) 100%);
+}
+/* Plain pages: smoked black glass, the design only a whisper through it */
+.projects, .contact {
+  background: linear-gradient(170deg, rgba(10, 10, 11, 0.82) 0%, rgba(4, 4, 5, 0.9) 60%, rgba(8, 8, 9, 0.86) 100%);
+}
+/* Plain pages now float too, so they get the filigree clasp back */
+.projects::after, .contact::after { display: block; }
+.projects::before, .contact::before { display: block; background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0) 30%); }
+
+/* The partner photo becomes a framed page as well */
+.partner { overflow: hidden; }
+.partner::before { border-radius: inherit; }
+
+/* Space after the last page before the footer, which stays full width */
+.contact { margin-bottom: var(--sheet-gap); }
+
+/* The 3D film and tour sit flush between pages: give them a hairline edge */
+.walk, .plan-film { margin-top: var(--sheet-gap); }
+
+/* =========================================================
+   Final: full-width sections, text set directly on a STILL
+   designed background (fixed in place, nothing animates).
+   Overrides the floating pages and the living backdrop above.
+   ========================================================= */
+.facts, .projects, .process, .contact, .partner {
+  margin: 0; border-radius: 0; box-shadow: none; background: transparent;
+}
+.contact { margin-bottom: 0; }
+.walk, .plan-film { margin-top: 0; }
+.partner { overflow: hidden; }
+
+/* Every content section shows the design, each with its own light */
+.facts::before, .projects::before, .process::before, .contact::before { display: block; border-radius: 0; }
+.projects::before { background: radial-gradient(55% 45% at 0% 8%, rgba(214, 219, 227, 0.14), rgba(214, 219, 227, 0) 70%), radial-gradient(60% 50% at 100% 92%, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0) 70%); }
+.contact::before { background: radial-gradient(50% 60% at 82% 45%, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0) 70%), radial-gradient(45% 45% at 8% 20%, rgba(214, 219, 227, 0.12), rgba(214, 219, 227, 0) 70%); }
+.projects::after, .contact::after { display: block; }
+
+/* The backdrop holds still */
+.royal-bg > *, .rb-glint b { animation: none !important; }
+.rb-glint, .rb-cursor { display: none !important; }
+.rb-scroll { transform: none !important; }
+.rb-rays { transform: none; opacity: 1; }
+.rb-gold, .rb-silver, .rb-deep { transform: none; }
+
+/* =========================================================
+   Carved gold vs plain black, alternating.
+   Carved panels: baroque gold corners joined by a double frame
+   rule, warm light and a faint lattice
+   (ornaments drawn by tools/ornaments.py).
+   Plain sections: solid deep black.
+   ========================================================= */
+.royal-bg { display: none; }
+html, body { background: #050505; }
+:root {
+  --cv-in: clamp(10px, 2vw, 26px);             /* corner inset from the section edge */
+  --cv-size: clamp(96px, 13vw, 190px);         /* corner ornament size */
+  --deco-faint: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23e2c063' stroke-opacity='0.1' stroke-width='0.9'%3E%3Cpath d='M0 40a40 40 0 0 1 80 0M10 40a30 30 0 0 1 60 0M20 40a20 20 0 0 1 40 0M30 40a10 10 0 0 1 20 0'/%3E%3Cpath d='M-40 80a40 40 0 0 1 80 0M-30 80a30 30 0 0 1 60 0M-20 80a20 20 0 0 1 40 0M-10 80a10 10 0 0 1 20 0'/%3E%3Cpath d='M40 80a40 40 0 0 1 80 0M50 80a30 30 0 0 1 60 0M60 80a20 20 0 0 1 40 0M70 80a10 10 0 0 1 20 0'/%3E%3C/g%3E%3C/svg%3E");
+  --carved-bg:
+    url('../assets/ornament/corner-tl.svg') left var(--cv-in) top var(--cv-in) / var(--cv-size) no-repeat,
+    url('../assets/ornament/corner-tr.svg') right var(--cv-in) top var(--cv-in) / var(--cv-size) no-repeat,
+    url('../assets/ornament/corner-bl.svg') left var(--cv-in) bottom var(--cv-in) / var(--cv-size) no-repeat,
+    url('../assets/ornament/corner-br.svg') right var(--cv-in) bottom var(--cv-in) / var(--cv-size) no-repeat,
+    radial-gradient(70% 60% at 50% 36%, rgba(212, 175, 55, 0.14), rgba(212, 175, 55, 0) 70%),
+    radial-gradient(120% 95% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.62) 100%),
+    var(--deco-faint) 0 0 / 76px 76px repeat,
+    linear-gradient(160deg, #0f0c07 0%, #060505 50%, #0e0b06 100%);
+}
+
+/* Carved gold panels */
+.facts, .process { background: var(--carved-bg); }
+/* The double frame rule between the corners (the corners draw their own
+   rounded ends, so the straight rule is masked out where they sit) */
+.facts::before, .process::before {
+  display: block; background: none; border-radius: 0;
+  inset: calc(var(--cv-in) + var(--cv-size) * 0.04);
+  border: 1.5px solid rgba(226, 192, 99, 0.7);
+  outline: 1px solid rgba(226, 192, 99, 0.42); outline-offset: calc(var(--cv-size) * -0.04 - 1px);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9)),
+                      linear-gradient(180deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9));
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9)),
+              linear-gradient(180deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9));
+}
+.facts::after, .process::after { display: block; }
+
+/* Plain black sections */
+.projects, .contact { background: #050505; }
+.projects::before, .contact::before, .projects::after, .contact::after { display: none; }
+
+/* Footer: a carved band, the lattice and light without the corners */
+.footer {
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0) 70%),
+    var(--deco-faint) 0 0 / 76px 76px repeat,
+    linear-gradient(180deg, #0c0a06, #050505);
+}
+
+/* Keep text clear of the frame on narrow screens */
+@media (max-width: 899px) {
+  .facts .wrap, .process .wrap { width: min(1280px, 100% - 64px); }
+}

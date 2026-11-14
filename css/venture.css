@@ -188,3 +188,66 @@ html:not(.js) .reel-track, .reel.is-static .reel-track { overflow-x: auto; scrol
   .chap-card, .shot img { transition: none; transform: none; }
   .js .venture-title span, .js .chap-hero .eyebrow, .js .venture-lede, .js .hero-facts, .js .scroll-hint { animation: none; }
 }
+
+/* Exclusive metallic layer (see home.css): sections let the gold-and-platinum
+   backdrop through and add their own light */
+.reel, .where, .venture-cta { background: transparent; isolation: isolate; }
+.where { border-top: 0; }
+.reel::before, .where::before, .venture-cta::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.reel::before { background: radial-gradient(50% 45% at 100% 20%, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0) 70%), radial-gradient(45% 45% at 0% 85%, rgba(214, 219, 227, 0.07), rgba(214, 219, 227, 0) 70%); }
+.where::before {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(206, 211, 219, 0.3), rgba(240, 212, 122, 0.4), rgba(206, 211, 219, 0.3), rgba(0, 0, 0, 0)) top / 100% 1px no-repeat,
+    radial-gradient(55% 50% at 15% 10%, rgba(220, 224, 232, 0.07), rgba(220, 224, 232, 0) 70%),
+    radial-gradient(50% 50% at 90% 70%, rgba(212, 175, 55, 0.09), rgba(212, 175, 55, 0) 70%);
+}
+.venture-cta { position: relative; }
+.venture-cta::before { background: radial-gradient(50% 60% at 70% 40%, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0) 70%); }
+.cta-box { background: radial-gradient(120% 140% at 100% 0%, rgba(212, 175, 55, 0.18), rgba(212, 175, 55, 0) 60%) padding-box, var(--panel-fill) padding-box, var(--metal-edge) border-box; }
+.spec { background: transparent; border: 1px solid transparent; background: var(--metal-edge) border-box; gap: 1px; }
+.spec div { background: var(--panel-fill); }
+.shot { border-color: rgba(206, 211, 219, 0.14); }
+
+/* Royal layer: filigree dividers on the resort page sections */
+.reel::after, .where::after, .venture-cta::after {
+  content: ''; position: absolute; z-index: 1; left: 50%; top: 0; width: min(420px, 72%); height: 24px;
+  transform: translate(-50%, -50%); pointer-events: none;
+  background: var(--filigree) center / contain no-repeat;
+}
+
+/* Rhythm on the resort page: gallery plain, plan and map royal, closing CTA plain, footer royal */
+.reel, .venture-cta { background: #050505; }
+.reel::before, .venture-cta::before, .reel::after, .venture-cta::after { display: none; }
+
+/* Floating pages on the resort page too */
+.where, .venture-cta .cta-box { box-shadow: inset 0 1px 0 rgba(255, 246, 220, 0.12), inset 0 0 0 1px rgba(214, 196, 150, 0.16), 0 40px 90px -40px rgba(0, 0, 0, 0.95); }
+.where, .reel { margin: var(--sheet-gap) var(--sheet-gap) 0; border-radius: var(--sheet-radius); }
+.where::before { border-radius: inherit; }
+.where { background: linear-gradient(170deg, rgba(14, 12, 9, 0.28) 0%, rgba(6, 6, 6, 0.42) 60%, rgba(10, 9, 7, 0.36) 100%); }
+.reel { background: linear-gradient(170deg, rgba(10, 10, 11, 0.82) 0%, rgba(4, 4, 5, 0.9) 60%, rgba(8, 8, 9, 0.86) 100%); box-shadow: inset 0 1px 0 rgba(255, 246, 220, 0.12), inset 0 0 0 1px rgba(214, 196, 150, 0.16), 0 40px 90px -40px rgba(0, 0, 0, 0.95); }
+.reel::after { display: block; }
+.venture-cta { background: transparent; padding-top: var(--sheet-gap); padding-bottom: var(--sheet-gap); }
+
+/* Final: full-width sections on the still designed background (resort page) */
+.where, .reel { margin: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.venture-cta { background: transparent; padding-top: 0; padding-bottom: clamp(90px, 13vw, 170px); }
+.reel::before, .where::before, .venture-cta::before { display: block; border-radius: 0; }
+.reel::before { background: radial-gradient(50% 45% at 100% 20%, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0) 70%), radial-gradient(45% 45% at 0% 85%, rgba(214, 219, 227, 0.09), rgba(214, 219, 227, 0) 70%); }
+.venture-cta::before { background: radial-gradient(50% 60% at 70% 40%, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0) 70%); }
+.reel::after, .where::after { display: block; }
+
+/* Carved gold vs plain black on the resort page */
+.where { background: var(--carved-bg); }
+.where::before {
+  display: block; background: none; border-radius: 0;
+  inset: calc(var(--cv-in) + var(--cv-size) * 0.04);
+  border: 1.5px solid rgba(226, 192, 99, 0.7);
+  outline: 1px solid rgba(226, 192, 99, 0.42); outline-offset: calc(var(--cv-size) * -0.04 - 1px);
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9)),
+                      linear-gradient(180deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9));
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9)),
+              linear-gradient(180deg, rgba(0, 0, 0, 0) calc(var(--cv-size) * 0.9), #000 calc(var(--cv-size) * 0.9), #000 calc(100% - var(--cv-size) * 0.9), rgba(0, 0, 0, 0) calc(100% - var(--cv-size) * 0.9));
+}
+.reel, .venture-cta { background: #050505; }
+.reel::before, .venture-cta::before, .reel::after, .venture-cta::after { display: none; }
+@media (max-width: 899px) { .where .wrap { width: min(1280px, 100% - 64px); } }
