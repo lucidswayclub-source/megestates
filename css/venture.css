@@ -251,3 +251,14 @@ html:not(.js) .reel-track, .reel.is-static .reel-track { overflow-x: auto; scrol
 .reel, .venture-cta { background: #050505; }
 .reel::before, .venture-cta::before, .reel::after, .venture-cta::after { display: none; }
 @media (max-width: 899px) { .where .wrap { width: min(1280px, 100% - 64px); } }
+
+@media (max-width: 699px) {
+  .where {
+    background:
+      radial-gradient(80% 50% at 50% 20%, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0) 70%),
+      var(--deco-faint) 0 0 / 64px 64px repeat,
+      linear-gradient(160deg, #0f0c07 0%, #060505 50%, #0e0b06 100%);
+  }
+  .where::before { display: none; }
+  .where .wrap { width: min(1280px, 100% - 32px); }
+}

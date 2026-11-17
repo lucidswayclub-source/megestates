@@ -1029,3 +1029,45 @@ html, body { background: #050505; }
 @media (max-width: 899px) {
   .facts .wrap, .process .wrap { width: min(1280px, 100% - 64px); }
 }
+
+/* =========================================================
+   Phones: one job per screen. Desktop is unchanged.
+   ========================================================= */
+@media (max-width: 699px) {
+  /* Flight: just the picture, the headline and one button */
+  .viewfinder, .fs-btn, .hud, .flight-scroll { display: none !important; }
+  .flight-intro .btn-ghost, .flight-arrive-copy .btn-ghost { display: none; }
+  .flight-intro .lede, .flight-arrive-copy .lede { font-size: 0.98rem; margin-top: 16px; }
+  .flight-intro .btn-row, .flight-arrive-copy .btn-row { margin-top: 22px; }
+  .cap-inline { font-size: 0.66rem; margin-top: 12px; }
+  .flight-credit { font-size: 8px; opacity: 0.7; }
+
+  /* Tour: label and title only */
+  .tour-text p:not(.eyebrow) { display: none; }
+  .tour-copy { min-height: 8rem; }
+  .tour-cap { font-size: 0.62rem; }
+
+  /* 3D film: the model, one callout, the chapter title */
+  .plan-hud { display: none !important; }
+  .plan-ch p:not(.plan-num) { display: none; }
+  .plan-ch .btn-ghost { display: none; }
+  .co-label { padding: 5px 9px 6px; }
+  .co-label b { font-size: 0.86rem; }
+  .co-label span { font-size: 0.56rem; letter-spacing: 0.16em; }
+  .co-line { width: 32px; }
+  .co-label { left: 24px; top: -44px; }
+  .callout.is-left .co-label { right: 24px; }
+
+  /* Carved panels: no corners or frame on a narrow screen, just the lattice and light */
+  .facts, .process {
+    background:
+      radial-gradient(80% 50% at 50% 20%, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0) 70%),
+      var(--deco-faint) 0 0 / 64px 64px repeat,
+      linear-gradient(160deg, #0f0c07 0%, #060505 50%, #0e0b06 100%);
+  }
+  .facts::before, .process::before { display: none; }
+  .facts .wrap, .process .wrap { width: min(1280px, 100% - 32px); }
+
+  /* The contact bar only on the regular sections (set from home.js) */
+  .quickbar { transition: transform 0.45s var(--ease), opacity 0.45s var(--ease); }
+}

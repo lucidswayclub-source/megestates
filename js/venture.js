@@ -58,7 +58,7 @@ function showTip(info, x, y) {
   tip.hidden = false;
 }
 
-import('./lucids3d.js?v=20261118f')
+import('./lucids3d.js?v=20261119a')
   .then(({ createLucids }) => {
     venture = createLucids(canvas, { theme: 'dark', onHover: showTip, fixedSize: true });
     if (!venture) root.classList.add('no-webgl');

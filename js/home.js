@@ -1,4 +1,4 @@
-import { createFlight } from './flight.js?v=20261118f';
+import { createFlight } from './flight.js?v=20261119a';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -356,12 +356,16 @@ let lastStats = '';
 const SCALE_STEPS = [2, 5, 10, 20, 50, 100, 200, 500];
 
 // Runs right after each 3D frame, so the overlay never lags the camera
+const PHONE = window.matchMedia('(max-width: 699px)');
 function updatePlanOverlay(view) {
   const anchors = view.anchors;
+  // Phones show one callout at a time; larger screens show the chapter's set
+  let budget = PHONE.matches ? 1 : Infinity;
   calloutEls.forEach((el, i) => {
     const c = CALLOUTS[i];
     const xyz = anchors[c.at];
-    const want = xyz && c.ch.includes(planChapter);
+    const want = xyz && c.ch.includes(planChapter) && budget > 0;
+    if (want) budget -= 1;
     if (!want) { el.classList.remove('is-on'); return; }
     const s = view.project(xyz);
     el.classList.toggle('is-on', s.visible);
@@ -389,7 +393,7 @@ function updatePlanOverlay(view) {
 }
 
 let estate = null;
-import('./lucids3d.js?v=20261118f')
+import('./lucids3d.js?v=20261119a')
   .then(({ createLucids }) => {
     estate = createLucids($('#estate'), {
       theme: 'dark',
@@ -578,7 +582,10 @@ function frame(now) {
     // The nav stays clear over the cinematic sections and turns solid after them
     const cinematicEnd = geo.tour.top + geo.tour.height - vh * 0.5;
     nav.classList.toggle('is-solid', y > cinematicEnd || nav.classList.contains('menu-open'));
-    quickbar.classList.toggle('is-on', y > vh * 0.6);
+    // Phones: the contact bar stays out of the cinematic sections, where it
+    // would cover the picture, and shows on the regular sections
+    const inCinema = ['flight', 'tour', 'walk'].some((k) => y > geo[k].top - vh * 0.25 && y < geo[k].top + geo[k].height - vh * 0.75);
+    quickbar.classList.toggle('is-on', y > vh * 0.6 && !inCinema);
   }
 }
 requestAnimationFrame(frame);
